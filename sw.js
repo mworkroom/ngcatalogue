@@ -1,4 +1,4 @@
-const CACHE_NAME = "atomy-price-v2";
+const CACHE_NAME = "atomy-price-v1";
 
 const STATIC_FILES = [
   "./",
@@ -38,6 +38,7 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
   const url = new URL(request.url);
 
+  // Supabase 같은 외부 API 요청은 서비스 워커가 처리하지 않음
   if (
     request.method !== "GET" ||
     url.origin !== self.location.origin
@@ -56,31 +57,7 @@ self.addEventListener("fetch", (event) => {
   // 아이콘과 정적 파일은 캐시 우선
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(request).then((response) => {
-        if (response.ok && shouldCacheRuntimeFile(request, url)) {
-          const responseClone = response.clone();
-
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseClone);
-          });
-        }
-
-        return response;
-      });
+      return cachedResponse || fetch(request);
     })
   );
 });
-
-function shouldCacheRuntimeFile(request, url) {
-  return (
-    request.destination === "script" ||
-    request.destination === "style" ||
-    request.destination === "image" ||
-    request.destination === "font" ||
-    url.pathname.includes("/assets/")
-  );
-}
