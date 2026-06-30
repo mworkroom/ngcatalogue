@@ -1,0 +1,92 @@
+import type { Language } from "./types/product";
+
+export const dictionary = {
+  pt: {
+    locale: "pt-BR",
+    title: "Catálogo de Produtos",
+    centerTitle: "Catálogo do Centro",
+    centerAccessTitle: "Acesso do Centro",
+    search: "Pesquisar produto",
+    print: "Imprimir PDF",
+    language: "Idioma",
+    productName: "Produto",
+    business: "Distribuidor",
+    consumer: "Consumidor",
+    brazil: "Site",
+    set: "Conjunto",
+    empty: "Nenhum produto encontrado.",
+    loading: "Carregando...",
+    count: (count: number) => `${count} produto${count === 1 ? "" : "s"}`,
+    setup:
+      "Configure VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY.",
+    loadError: "Não foi possível carregar os produtos.",
+    centerCodeLabel: "Digite o código de acesso",
+    centerLoginButton: "Entrar",
+    centerValidating: "Validando...",
+    centerLogout: "Sair do acesso do centro",
+    checkingCenterSession: "Verificando acesso...",
+    loadingCenterProducts: "Carregando produtos do centro...",
+    invalidAccessCode: "Código inválido.",
+    expiredCenterSession: "A sessão expirou. Digite o código novamente.",
+    centerNetworkError: "Não foi possível conectar ao acesso do centro.",
+    centerServerError: "O acesso do centro não está disponível agora.",
+    columns: {
+      productName: "Produto",
+      handling_fee: "Taxa de manuseio",
+      business_price: "Preço Distribuidor Brasil",
+      consumer_price: "Preço Consumidor Brasil",
+      brazil_price: "Preço Site Brasil",
+      brazil_pv: "PV Brasil",
+      korea_pv: "PV Coreia",
+      korea_price: "Preço Coreia",
+      weight: "Peso",
+      memo: "Observação",
+      updated_at: "Atualizado em"
+    }
+  },
+  ko: {
+    locale: "ko-KR",
+    title: "애터미 가격표",
+    centerTitle: "센터 전용 카탈로그",
+    centerAccessTitle: "센터 전용",
+    search: "상품명 검색",
+    print: "PDF 출력",
+    language: "언어",
+    productName: "상품명",
+    business: "사업자",
+    consumer: "소비자",
+    brazil: "사이트",
+    set: "세트",
+    empty: "검색 결과가 없습니다.",
+    loading: "불러오는 중...",
+    count: (count: number) => `상품 ${count}개`,
+    setup:
+      "VITE_SUPABASE_URL과 VITE_SUPABASE_PUBLISHABLE_KEY를 설정해 주세요.",
+    loadError: "상품을 불러오지 못했습니다.",
+    centerCodeLabel: "접근 코드를 입력하세요",
+    centerLoginButton: "입장",
+    centerValidating: "확인 중...",
+    centerLogout: "센터 접속 해제",
+    checkingCenterSession: "센터 접속을 확인하는 중...",
+    loadingCenterProducts: "센터 상품을 불러오는 중...",
+    invalidAccessCode: "코드가 올바르지 않습니다.",
+    expiredCenterSession: "세션이 만료되었습니다. 코드를 다시 입력해 주세요.",
+    centerNetworkError: "센터 접속에 연결하지 못했습니다.",
+    centerServerError: "현재 센터 접속을 사용할 수 없습니다.",
+    columns: {
+      productName: "상품명",
+      handling_fee: "취급 수수료",
+      business_price: "브라질 사업자 가격",
+      consumer_price: "브라질 소비자 가격",
+      brazil_price: "브라질 사이트 가격",
+      brazil_pv: "브라질 PV",
+      korea_pv: "한국 PV",
+      korea_price: "한국 가격",
+      weight: "중량",
+      memo: "메모",
+      updated_at: "업데이트"
+    }
+  }
+} as const;
+
+export type Translation = (typeof dictionary)[Language];
