@@ -2,8 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00B5EF">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="애터미 가격표">
+
+
   <title>Catálogo de Produtos</title>
   <style>
     :root {
@@ -441,7 +448,7 @@
       },
       ko: {
         locale: "ko-KR",
-        title: "브라질 가격표",
+        title: "애터미 가격표",
         search: "상품명 검색",
         print: "PDF 출력",
         name: "상품명",
@@ -710,5 +717,20 @@
     renderStaticText();
     loadProducts();
   </script>
+  
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async () => {
+      try {
+        await navigator.serviceWorker.register("./sw.js");
+        console.log("Service Worker 등록 완료");
+      } catch (error) {
+        console.error("Service Worker 등록 실패:", error);
+      }
+    });
+  }
+</script>
+  
+  
 </body>
 </html>
