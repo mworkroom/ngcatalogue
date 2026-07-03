@@ -19,7 +19,7 @@ import { searchProducts } from "./utils/productSearch";
 import { sortProducts } from "./utils/productSort";
 
 export default function App() {
-  const mode = getCatalogueMode();
+  const mode = useCatalogueMode();
   const isCenterMode = mode === "center";
   const [language, setLanguage] = useState<Language>("pt");
   const [query, setQuery] = useState("");
@@ -82,6 +82,24 @@ export default function App() {
           error={centerSessionError}
           onSubmit={loginCenterSession}
         />
+      </main>
+    );
+  }
+
+  if (isCenterMode && centerState.error) {
+    return (
+      <main className="app app-center">
+        <Header
+          mode={mode}
+          language={language}
+          onLanguageChange={setLanguage}
+          onLogout={logoutCenterSession}
+        />
+        <section className="access-panel">
+          <ErrorState
+            message={getCenterProductsErrorMessage(centerState.error, language)}
+          />
+        </section>
       </main>
     );
   }
@@ -178,8 +196,40 @@ function Header({
 }
 
 function getCatalogueMode(): CatalogueMode {
-  const pathname = window.location.pathname.replace(/\/+$/, "");
+  const rawHashRoute = window.location.hash.replace(/^#/, "");
+  const hashRoute = normalizeRoute(rawHashRoute);
+
+  if (rawHashRoute) {
+    return hashRoute === "/catalog/center" ? "center" : "public";
+  }
+
+  const pathname = normalizeRoute(window.location.pathname);
   return pathname.endsWith("/catalog/center") ? "center" : "public";
+}
+
+function useCatalogueMode() {
+  const [mode, setMode] = useState<CatalogueMode>(() => getCatalogueMode());
+
+  useEffect(() => {
+    const syncMode = () => {
+      setMode(getCatalogueMode());
+    };
+
+    window.addEventListener("hashchange", syncMode);
+    window.addEventListener("popstate", syncMode);
+
+    return () => {
+      window.removeEventListener("hashchange", syncMode);
+      window.removeEventListener("popstate", syncMode);
+    };
+  }, []);
+
+  return mode;
+}
+
+function normalizeRoute(route: string) {
+  const pathOnly = route.split(/[?#]/, 1)[0].replace(/\/+$/, "");
+  return pathOnly || "/";
 }
 
 function getCenterProductsErrorMessage(
