@@ -276,6 +276,13 @@ th {
   white-space: nowrap;
 }
 
+.center-table th {
+  line-height: 1.15;
+  text-wrap: balance;
+  vertical-align: bottom;
+  white-space: normal;
+}
+
 tbody tr:last-child td {
   border-bottom: 0;
 }
@@ -641,6 +648,13 @@ details.product-card summary:active {
     min-width: 0;
     table-layout: auto;
     font-size: 7pt;
+  }
+
+  .app-center .center-table th {
+    line-height: 1.1;
+    text-wrap: balance;
+    vertical-align: bottom;
+    white-space: normal;
   }
 
   .app-center th,
