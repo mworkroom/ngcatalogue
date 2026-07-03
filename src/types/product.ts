@@ -7,6 +7,7 @@ export interface ProductNameFields {
   name_ko: string | null;
   name_pt: string | null;
   is_set: boolean;
+  pack_quantity: number | null;
 }
 
 export interface PublicProduct extends ProductNameFields {
