@@ -10,8 +10,7 @@ import {
   getColumnClassName,
   getColumnLabel
 } from "../utils/productFields";
-import { getProductName } from "../utils/productText";
-import { SetBadge } from "./SetBadge";
+import { ProductName } from "./ProductName";
 
 interface ProductTableProps {
   mode: CatalogueMode;
@@ -46,10 +45,7 @@ export function ProductTable({
           {products.map((product) => (
             <tr key={product.id}>
               <td className="name-column">
-                <span className="product-name">
-                  {getProductName(product, language)}
-                </span>
-                {product.is_set ? <SetBadge language={language} /> : null}
+                <ProductName product={product} language={language} />
               </td>
               {columns.map((column) => (
                 <td key={column} className={getColumnClassName(column)}>

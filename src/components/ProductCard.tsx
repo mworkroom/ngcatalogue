@@ -8,8 +8,7 @@ import {
   formatProductColumn,
   getColumnLabel
 } from "../utils/productFields";
-import { getProductName } from "../utils/productText";
-import { SetBadge } from "./SetBadge";
+import { ProductName } from "./ProductName";
 
 interface ProductCardProps {
   mode: CatalogueMode;
@@ -23,10 +22,11 @@ export function ProductCard({ mode, language, product }: ProductCardProps) {
   return (
     <details className={`product-card ${mode}-product-card`}>
       <summary>
-        <span className="summary-name">
-          {getProductName(product, language)}
-          {product.is_set ? <SetBadge language={language} /> : null}
-        </span>
+        <ProductName
+          product={product}
+          language={language}
+          className="summary-name"
+        />
         {mode === "public" ? (
           <span className="summary-price">
             {formatProductColumn(product, "business_price", language)}
