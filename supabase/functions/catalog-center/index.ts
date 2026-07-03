@@ -17,6 +17,7 @@ const CENTER_SELECT_COLUMNS = [
   "weight",
   "memo",
   "is_set",
+  "pack_quantity",
   "updated_at"
 ].join(",");
 
