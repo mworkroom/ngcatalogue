@@ -42,6 +42,11 @@ summary,
   padding: 28px 0 48px;
 }
 
+.app-center {
+  width: min(1680px, calc(100% - 20px));
+  padding-top: 18px;
+}
+
 .topbar {
   display: flex;
   align-items: center;
@@ -146,6 +151,10 @@ h1 {
   font-size: 18px;
 }
 
+.app-center .search-wrap input {
+  height: 52px;
+}
+
 .search-wrap input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 4px rgba(44, 62, 107, 0.12);
@@ -161,6 +170,10 @@ h1 {
   cursor: pointer;
   font-weight: 800;
   box-shadow: var(--shadow);
+}
+
+.app-center .print-button {
+  height: 52px;
 }
 
 .meta {
@@ -188,7 +201,7 @@ h1 {
 }
 
 .center-table-card {
-  max-height: calc(100vh - 210px);
+  max-height: calc(100vh - 176px);
   min-height: 280px;
   overflow: auto;
   overscroll-behavior: contain;
@@ -201,7 +214,7 @@ table {
 }
 
 .center-table {
-  min-width: 1180px;
+  min-width: 1320px;
   table-layout: auto;
 }
 
@@ -221,8 +234,17 @@ td:first-child {
 
 .center-table th:first-child,
 .center-table td:first-child {
-  width: 240px;
-  min-width: 240px;
+  width: 260px;
+  min-width: 260px;
+}
+
+.center-table th,
+.center-table td {
+  padding: 11px 12px;
+}
+
+.center-table th {
+  font-size: 13px;
 }
 
 .text-column {
