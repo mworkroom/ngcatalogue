@@ -18,7 +18,8 @@ export const PUBLIC_SELECT_COLUMNS = [
   "business_price",
   "consumer_price",
   "brazil_price",
-  "is_set"
+  "is_set",
+  "pack_quantity"
 ].join(",");
 
 export const CENTER_PRODUCT_FIELDS = [
@@ -35,6 +36,7 @@ export const CENTER_PRODUCT_FIELDS = [
   "weight",
   "memo",
   "is_set",
+  "pack_quantity",
   "updated_at"
 ].join(",");
 
