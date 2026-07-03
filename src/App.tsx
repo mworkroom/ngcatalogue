@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CenterAccessForm } from "./components/CenterAccessForm";
 import { CenterSessionControls } from "./components/CenterSessionControls";
+import { AdminLogin } from "./components/AdminLogin";
+import { AdminPlaceholder } from "./components/AdminPlaceholder";
+import { AdminUnauthorized } from "./components/AdminUnauthorized";
 import { ErrorState } from "./components/ErrorState";
 import { LanguageSwitch } from "./components/LanguageSwitch";
 import { LoadingState } from "./components/LoadingState";
@@ -11,6 +14,7 @@ import {
   type CenterProductsError,
   useCenterProducts
 } from "./hooks/useCenterProducts";
+import { useAdminAuth } from "./hooks/useAdminAuth";
 import { useCenterSession } from "./hooks/useCenterSession";
 import { useProducts } from "./hooks/useProducts";
 import { dictionary } from "./i18n";
@@ -19,7 +23,16 @@ import { searchProducts } from "./utils/productSearch";
 import { sortProducts } from "./utils/productSort";
 
 export default function App() {
-  const mode = useCatalogueMode();
+  const route = useAppRoute();
+
+  if (route === "admin") {
+    return <AdminRoute />;
+  }
+
+  return <CatalogueRoute mode={route} />;
+}
+
+function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
   const isCenterMode = mode === "center";
   const [language, setLanguage] = useState<Language>("pt");
   const [query, setQuery] = useState("");
@@ -167,6 +180,72 @@ export default function App() {
   );
 }
 
+function AdminRoute() {
+  const { action, signInWithDifferentAccount, signInWithGoogle, signOut, state } =
+    useAdminAuth();
+  const busy = action !== "idle";
+
+  useEffect(() => {
+    document.documentElement.lang = "ko-KR";
+    document.title = "관리자 페이지";
+  }, []);
+
+  if (state.status === "checking-session") {
+    return (
+      <main className="app app-admin">
+        <section className="access-panel admin-panel admin-status-panel">
+          <LoadingState message="로그인 상태를 확인하는 중입니다." />
+        </section>
+      </main>
+    );
+  }
+
+  if (state.status === "checking-membership") {
+    return (
+      <main className="app app-admin">
+        <section className="access-panel admin-panel admin-status-panel">
+          <LoadingState message="관리자 권한을 확인하는 중입니다." />
+        </section>
+      </main>
+    );
+  }
+
+  if (state.status === "authorized" && state.user) {
+    return (
+      <main className="app app-admin">
+        <AdminPlaceholder
+          email={state.user.email ?? ""}
+          busy={busy}
+          onLogout={signOut}
+        />
+      </main>
+    );
+  }
+
+  if (state.status === "unauthorized" && state.user) {
+    return (
+      <main className="app app-admin">
+        <AdminUnauthorized
+          email={state.user.email ?? ""}
+          busy={busy}
+          onLoginWithDifferentAccount={signInWithDifferentAccount}
+          onLogout={signOut}
+        />
+      </main>
+    );
+  }
+
+  return (
+    <main className="app app-admin">
+      <AdminLogin
+        busy={busy}
+        error={state.status === "error" ? state.error : null}
+        onLogin={signInWithGoogle}
+      />
+    </main>
+  );
+}
+
 interface HeaderProps {
   mode: CatalogueMode;
   language: Language;
@@ -195,24 +274,34 @@ function Header({
   );
 }
 
-function getCatalogueMode(): CatalogueMode {
+type AppRoute = CatalogueMode | "admin";
+
+function getAppRoute(): AppRoute {
   const rawHashRoute = window.location.hash.replace(/^#/, "");
   const hashRoute = normalizeRoute(rawHashRoute);
 
   if (rawHashRoute) {
+    if (hashRoute === "/admin") {
+      return "admin";
+    }
+
     return hashRoute === "/catalog/center" ? "center" : "public";
   }
 
   const pathname = normalizeRoute(window.location.pathname);
+  if (pathname.endsWith("/admin")) {
+    return "admin";
+  }
+
   return pathname.endsWith("/catalog/center") ? "center" : "public";
 }
 
-function useCatalogueMode() {
-  const [mode, setMode] = useState<CatalogueMode>(() => getCatalogueMode());
+function useAppRoute() {
+  const [route, setRoute] = useState<AppRoute>(() => getAppRoute());
 
   useEffect(() => {
     const syncMode = () => {
-      setMode(getCatalogueMode());
+      setRoute(getAppRoute());
     };
 
     window.addEventListener("hashchange", syncMode);
@@ -224,7 +313,7 @@ function useCatalogueMode() {
     };
   }, []);
 
-  return mode;
+  return route;
 }
 
 function normalizeRoute(route: string) {
