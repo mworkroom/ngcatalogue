@@ -3,8 +3,8 @@ import type { Language } from "./types/product";
 export const dictionary = {
   pt: {
     locale: "pt-BR",
-    title: "Catálogo de Produtos",
-    centerTitle: "Catálogo do Centro",
+    title: "Preços Atomy",
+    centerTitle: "Preços Atomy (Centro)",
     centerAccessTitle: "Acesso do Centro",
     search: "Pesquisar produto",
     print: "Imprimir PDF",
@@ -47,7 +47,7 @@ export const dictionary = {
   ko: {
     locale: "ko-KR",
     title: "애터미 가격표",
-    centerTitle: "센터 전용 카탈로그",
+    centerTitle: "애터미 가격표 (센터 전용)",
     centerAccessTitle: "센터 전용",
     search: "상품명 검색",
     print: "PDF 출력",
@@ -75,7 +75,7 @@ export const dictionary = {
     centerServerError: "현재 센터 접속을 사용할 수 없습니다.",
     columns: {
       productName: "상품명",
-      handling_fee: "취급 수수료",
+      handling_fee: "핸들링 가격",
       business_price: "브라질 사업자 가격",
       consumer_price: "브라질 소비자 가격",
       brazil_price: "브라질 사이트 가격",
