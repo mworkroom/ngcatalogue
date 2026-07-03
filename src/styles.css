@@ -258,21 +258,50 @@ tbody tr:hover {
   background: #fafbfc;
 }
 
+.product-name-line {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  max-width: 100%;
+  min-width: 0;
+  vertical-align: middle;
+}
+
 .product-name {
+  min-width: 0;
   font-weight: 750;
   overflow-wrap: anywhere;
 }
 
-.set-badge {
-  display: inline-block;
-  margin-left: 8px;
+.product-badges {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.set-badge,
+.quantity-badge {
+  display: inline-flex;
+  align-items: center;
   padding: 3px 7px;
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
   font-size: 11px;
   font-weight: 800;
-  vertical-align: 1px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.set-badge {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.quantity-badge {
+  background: #eef0f2;
+  color: #59616c;
 }
 
 .mobile-list {
@@ -314,7 +343,10 @@ details.product-card summary:active {
 .summary-name {
   min-width: 0;
   font-weight: 800;
-  overflow-wrap: anywhere;
+}
+
+.summary-name .product-name {
+  font-weight: 800;
 }
 
 .summary-price {
@@ -513,10 +545,33 @@ details.product-card summary:active {
     break-inside: avoid;
   }
 
+  .product-name-line {
+    gap: 2px 4px;
+  }
+
+  .product-badges {
+    gap: 3px;
+    white-space: nowrap;
+  }
+
+  .set-badge,
+  .quantity-badge {
+    padding: 1px 4px;
+    font-size: 6.5pt;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
   .set-badge {
     border: 1px solid #888;
     background: white;
     color: black;
+  }
+
+  .quantity-badge {
+    border: 1px solid #aaa;
+    background: white;
+    color: #444;
   }
 
   @page center-catalogue {
