@@ -188,7 +188,10 @@ h1 {
 }
 
 .center-table-card {
-  overflow-x: auto;
+  max-height: calc(100vh - 210px);
+  min-height: 280px;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 table {
@@ -243,6 +246,7 @@ td:first-child {
 th {
   position: sticky;
   top: 0;
+  z-index: 2;
   background: var(--accent-soft);
   color: var(--accent);
   font-size: 14px;
@@ -255,6 +259,27 @@ tbody tr:last-child td {
 }
 
 tbody tr:hover {
+  background: #fafbfc;
+}
+
+.center-table th:first-child,
+.center-table td:first-child {
+  position: sticky;
+  left: 0;
+  box-shadow: 1px 0 0 var(--line);
+}
+
+.center-table th:first-child {
+  z-index: 4;
+  background: var(--accent-soft);
+}
+
+.center-table td:first-child {
+  z-index: 1;
+  background: var(--panel);
+}
+
+.center-table tbody tr:hover td:first-child {
   background: #fafbfc;
 }
 
@@ -584,7 +609,10 @@ details.product-card summary:active {
   }
 
   .app-center .table-card {
+    max-height: none;
+    min-height: 0;
     overflow: visible;
+    overscroll-behavior: auto;
   }
 
   .app-center .center-table {
@@ -600,8 +628,10 @@ details.product-card summary:active {
 
   .app-center .center-table th:first-child,
   .app-center .center-table td:first-child {
+    position: static;
     width: 20%;
     min-width: 0;
+    box-shadow: none;
   }
 
   .app-center .memo-column {
