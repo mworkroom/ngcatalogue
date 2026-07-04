@@ -56,6 +56,7 @@ export function BusinessAccessForm({
           {getBusinessSessionErrorMessage(error, language)}
         </p>
       ) : null}
+      <p className="access-note">{t.installFreeNote}</p>
     </section>
   );
 }

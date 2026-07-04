@@ -56,6 +56,7 @@ export function CenterAccessForm({
           {getCenterSessionErrorMessage(error, language)}
         </p>
       ) : null}
+      <p className="access-note">{t.installFreeNote}</p>
     </section>
   );
 }

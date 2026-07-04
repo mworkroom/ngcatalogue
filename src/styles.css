@@ -1,14 +1,15 @@
 :root {
-  --bg: #f6f7f9;
+  --bg: #f4f5f7;
   --panel: #ffffff;
-  --text: #17202a;
-  --muted: #6b7280;
-  --line: #dfe3e8;
-  --accent: #2c3e6b;
-  --accent-soft: #eef1f8;
+  --text: #111827;
+  --muted: #606b78;
+  --line: #d9dde3;
+  --accent: #25b7e8;
+  --accent-strong: #0aa5dc;
+  --accent-soft: #e8f8fd;
   --danger: #9b2c2c;
-  --radius: 16px;
-  --shadow: 0 8px 24px rgba(21, 31, 52, 0.07);
+  --radius: 8px;
+  --shadow: 0 4px 16px rgba(17, 24, 39, 0.06);
 }
 
 * {
@@ -39,7 +40,7 @@ summary,
 .app {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 28px 0 48px;
+  padding: 18px 0 48px;
 }
 
 .app-center {
@@ -53,46 +54,111 @@ summary,
 }
 
 .topbar {
-  display: flex;
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 8px;
+  min-height: 78px;
+  padding: 0 12px;
   margin-bottom: 18px;
+  background: var(--accent);
+  color: white;
 }
 
 .topbar-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
-  flex: 0 0 auto;
+}
+
+.topbar-spacer {
+  width: 44px;
+  height: 44px;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(24px, 4vw, 36px);
+  font-size: 22px;
   line-height: 1.15;
   letter-spacing: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.topbar-menu {
+  position: relative;
+}
+
+.topbar-menu summary {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 999px;
+  color: white;
+  cursor: pointer;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  list-style: none;
+}
+
+.topbar-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.topbar-menu summary:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px white;
+}
+
+.topbar-menu-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  display: grid;
+  gap: 8px;
+  width: min(280px, calc(100vw - 32px));
+  padding: 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgba(17, 24, 39, 0.18);
+}
+
+.topbar-menu-panel button {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 800;
+  text-align: left;
 }
 
 .language-switch {
   display: inline-flex;
-  flex: 0 0 auto;
+  width: 100%;
   padding: 4px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
+  border-radius: var(--radius);
 }
 
 .language-switch button {
+  flex: 1 1 0;
   border: 0;
   background: transparent;
   color: var(--muted);
   padding: 9px 14px;
-  border-radius: 999px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 700;
+  text-align: center;
 }
 
 .language-switch button.active {
@@ -103,10 +169,13 @@ h1 {
 .language-switch button:focus-visible,
 .print-button:focus-visible,
 .logout-button:focus-visible,
+.topbar-menu-panel button:focus-visible,
+.shortcut-banner button:focus-visible,
+.shortcut-dialog button:focus-visible,
 .access-form button:focus-visible,
 .admin-button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(44, 62, 107, 0.18);
+  box-shadow: 0 0 0 4px rgba(37, 183, 232, 0.22);
 }
 
 .logout-button {
@@ -163,7 +232,7 @@ h1 {
 
 .search-wrap input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(44, 62, 107, 0.12);
+  box-shadow: 0 0 0 4px rgba(37, 183, 232, 0.14);
 }
 
 .print-button {
@@ -180,6 +249,13 @@ h1 {
 
 .app-center .print-button {
   height: 52px;
+}
+
+.print-button:hover,
+.access-form button:hover,
+.admin-button-primary:hover,
+.shortcut-primary:hover {
+  background: var(--accent-strong);
 }
 
 .meta {
@@ -360,7 +436,7 @@ details.product-card {
   overflow: hidden;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 
@@ -463,7 +539,7 @@ details.product-card summary:active {
   height: 56px;
   padding: 0 16px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: white;
   color: var(--text);
   outline: none;
@@ -473,13 +549,13 @@ details.product-card summary:active {
 
 .access-form input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(44, 62, 107, 0.12);
+  box-shadow: 0 0 0 4px rgba(37, 183, 232, 0.14);
 }
 
 .access-form button {
   height: 54px;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: var(--accent);
   color: white;
   cursor: pointer;
@@ -495,6 +571,144 @@ details.product-card summary:active {
   margin: 14px 0 0;
   color: var(--danger);
   font-weight: 800;
+}
+
+.access-note {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.shortcut-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.shortcut-banner h2 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.shortcut-banner p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.shortcut-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.shortcut-banner button {
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.shortcut-primary {
+  border: 0;
+  background: var(--accent);
+  color: white;
+}
+
+.shortcut-secondary {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+}
+
+.shortcut-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: end center;
+  padding: 18px;
+  background: rgba(17, 24, 39, 0.42);
+}
+
+.shortcut-dialog {
+  width: min(520px, 100%);
+  padding: 18px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 50px rgba(17, 24, 39, 0.26);
+}
+
+.shortcut-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.shortcut-dialog-header h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.shortcut-dialog-header button {
+  display: grid;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.shortcut-dialog-intro {
+  margin: 12px 0 16px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.shortcut-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.shortcut-steps div {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fafbfc;
+}
+
+.shortcut-steps h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.shortcut-steps p {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.5;
 }
 
 .admin-panel {
@@ -522,7 +736,7 @@ details.product-card summary:active {
 .admin-account {
   padding: 12px 14px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: #fafbfc;
   color: var(--text);
   font-weight: 750;
@@ -539,7 +753,7 @@ details.product-card summary:active {
 .admin-button {
   min-height: 52px;
   padding: 0 16px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   cursor: pointer;
   font-weight: 800;
 }
@@ -564,18 +778,18 @@ details.product-card summary:active {
 
 @media (max-width: 720px) {
   .app {
-    width: min(100% - 24px, 680px);
-    padding-top: 18px;
+    width: 100%;
+    padding: 0 12px 48px;
   }
 
   .topbar {
-    align-items: flex-start;
-    flex-direction: column;
+    margin-right: -12px;
+    margin-left: -12px;
+    margin-bottom: 14px;
   }
 
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
+  h1 {
+    font-size: 20px;
   }
 
   .search-panel {
@@ -604,6 +818,18 @@ details.product-card summary:active {
     margin-top: 24px;
     padding: 20px;
   }
+
+  .shortcut-banner {
+    grid-template-columns: 1fr;
+  }
+
+  .shortcut-banner-actions {
+    justify-content: stretch;
+  }
+
+  .shortcut-banner button {
+    flex: 1 1 140px;
+  }
 }
 
 @media print {
@@ -625,7 +851,9 @@ details.product-card summary:active {
   .topbar,
   .search-panel,
   .meta,
-  .mobile-list {
+  .mobile-list,
+  .shortcut-banner,
+  .shortcut-dialog-backdrop {
     display: none !important;
   }
 

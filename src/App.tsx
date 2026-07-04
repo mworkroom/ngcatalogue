@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BusinessAccessForm } from "./components/BusinessAccessForm";
 import { CenterAccessForm } from "./components/CenterAccessForm";
-import { SessionControls } from "./components/SessionControls";
 import { AdminLogin } from "./components/AdminLogin";
 import { AdminPlaceholder } from "./components/AdminPlaceholder";
 import { AdminUnauthorized } from "./components/AdminUnauthorized";
@@ -70,6 +69,10 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
   const isBusinessMode = mode === "business";
   const [language, setLanguage] = useState<Language>("pt");
   const [query, setQuery] = useState("");
+  const [shortcutHelpOpen, setShortcutHelpOpen] = useState(false);
+  const [shortcutBannerDismissed, setShortcutBannerDismissed] = useState(() =>
+    readShortcutBannerDismissed()
+  );
   const {
     session: businessSession,
     checking: checkingBusinessSession,
@@ -226,6 +229,11 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
   const showEmpty =
     !loading &&
     (isCenterMode ? !centerState.error : !businessState.error);
+  const showShortcutBanner = !shortcutBannerDismissed;
+  const dismissShortcutBanner = () => {
+    setShortcutBannerDismissed(true);
+    window.localStorage.setItem(SHORTCUT_BANNER_KEY, "1");
+  };
 
   return (
     <main className={`app ${isCenterMode ? "app-center" : "app-public"}`}>
@@ -234,6 +242,7 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
         language={language}
         onLanguageChange={setLanguage}
         onLogout={isCenterMode ? logoutCenterSession : logoutBusinessSession}
+        onShortcutHelp={() => setShortcutHelpOpen(true)}
       />
 
       <SearchBar
@@ -261,6 +270,14 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
         )}
       </div>
 
+      {showShortcutBanner ? (
+        <ShortcutBanner
+          language={language}
+          onOpenHelp={() => setShortcutHelpOpen(true)}
+          onDismiss={dismissShortcutBanner}
+        />
+      ) : null}
+
       <ProductTable
         mode={mode}
         language={language}
@@ -272,6 +289,11 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
         language={language}
         products={visibleProducts}
         showEmpty={showEmpty}
+      />
+      <ShortcutHelpDialog
+        language={language}
+        open={shortcutHelpOpen}
+        onClose={() => setShortcutHelpOpen(false)}
       />
     </main>
   );
@@ -348,33 +370,130 @@ interface HeaderProps {
   language: Language;
   onLanguageChange: (language: Language) => void;
   onLogout?: () => void;
+  onShortcutHelp?: () => void;
 }
 
 function Header({
   mode,
   language,
   onLanguageChange,
-  onLogout
+  onLogout,
+  onShortcutHelp
 }: HeaderProps) {
   const t = dictionary[language];
+  const logoutLabel = mode === "center" ? t.centerLogout : t.businessLogout;
 
   return (
     <header className="topbar">
-      <h1>{mode === "center" ? t.centerTitle : t.title}</h1>
+      <div className="topbar-spacer" aria-hidden="true" />
+      <h1>{t.appName}</h1>
       <div className="topbar-actions">
-        {onLogout ? (
-          <SessionControls
-            label={mode === "center" ? t.centerLogout : t.businessLogout}
-            onLogout={onLogout}
-          />
-        ) : null}
-        <LanguageSwitch language={language} onChange={onLanguageChange} />
+        <details className="topbar-menu">
+          <summary aria-label={t.menu}>⋮</summary>
+          <div className="topbar-menu-panel">
+            {onShortcutHelp ? (
+              <button type="button" onClick={onShortcutHelp}>
+                {t.shortcutBannerAction}
+              </button>
+            ) : null}
+            {onLogout ? (
+              <button type="button" onClick={onLogout}>
+                {logoutLabel}
+              </button>
+            ) : null}
+            <LanguageSwitch language={language} onChange={onLanguageChange} />
+          </div>
+        </details>
       </div>
     </header>
   );
 }
 
+interface ShortcutBannerProps {
+  language: Language;
+  onOpenHelp: () => void;
+  onDismiss: () => void;
+}
+
+function ShortcutBanner({
+  language,
+  onOpenHelp,
+  onDismiss
+}: ShortcutBannerProps) {
+  const t = dictionary[language];
+
+  return (
+    <section className="shortcut-banner" aria-labelledby="shortcut-banner-title">
+      <div>
+        <h2 id="shortcut-banner-title">{t.shortcutBannerTitle}</h2>
+        <p>{t.shortcutBannerBody}</p>
+      </div>
+      <div className="shortcut-banner-actions">
+        <button type="button" className="shortcut-primary" onClick={onOpenHelp}>
+          {t.shortcutBannerAction}
+        </button>
+        <button type="button" className="shortcut-secondary" onClick={onDismiss}>
+          {t.shortcutDismiss}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+interface ShortcutHelpDialogProps {
+  language: Language;
+  open: boolean;
+  onClose: () => void;
+}
+
+function ShortcutHelpDialog({
+  language,
+  open,
+  onClose
+}: ShortcutHelpDialogProps) {
+  const t = dictionary[language];
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <div className="shortcut-dialog-backdrop" role="presentation">
+      <section
+        className="shortcut-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shortcut-dialog-title"
+      >
+        <div className="shortcut-dialog-header">
+          <h2 id="shortcut-dialog-title">{t.shortcutHelpTitle}</h2>
+          <button type="button" aria-label={t.close} onClick={onClose}>
+            ×
+          </button>
+        </div>
+        <p className="shortcut-dialog-intro">{t.shortcutHelpIntro}</p>
+        <div className="shortcut-steps">
+          <div>
+            <h3>{t.shortcutAndroidTitle}</h3>
+            <p>{t.shortcutAndroidSteps}</p>
+          </div>
+          <div>
+            <h3>{t.shortcutIosTitle}</h3>
+            <p>{t.shortcutIosSteps}</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 type AppRoute = CatalogueMode | "admin";
+
+const SHORTCUT_BANNER_KEY = "ngcatalogue-shortcut-banner-dismissed";
+
+function readShortcutBannerDismissed() {
+  return window.localStorage.getItem(SHORTCUT_BANNER_KEY) === "1";
+}
 
 function getAppRoute(): AppRoute {
   const rawHashRoute = window.location.hash.replace(/^#/, "");
