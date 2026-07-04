@@ -6,6 +6,7 @@ interface AdminProductFormProps {
   product: AdminProduct | null;
   onCancel: () => void;
   onHide?: (product: AdminProduct) => void;
+  onRestore?: (product: AdminProduct) => void;
   onSubmit: (input: AdminProductInput) => Promise<void>;
 }
 
@@ -58,6 +59,7 @@ export function AdminProductForm({
   product,
   onCancel,
   onHide,
+  onRestore,
   onSubmit
 }: AdminProductFormProps) {
   const [state, setState] = useState<ProductFormState>(() =>
@@ -165,19 +167,6 @@ export function AdminProductForm({
             />
             <span>세트 상품</span>
           </label>
-          <label>
-            <input
-              checked={state.is_visible}
-              type="checkbox"
-              onChange={(event) =>
-                setState((current) => ({
-                  ...current,
-                  is_visible: event.target.checked
-                }))
-              }
-            />
-            <span>가격표에 표시</span>
-          </label>
         </div>
 
         <label>
@@ -224,6 +213,16 @@ export function AdminProductForm({
               onClick={() => onHide(product)}
             >
               상품 숨기기
+            </button>
+          ) : null}
+          {product && !product.is_visible && onRestore ? (
+            <button
+              type="button"
+              className="admin-button admin-button-primary"
+              disabled={busy}
+              onClick={() => onRestore(product)}
+            >
+              다시 보이게 하기
             </button>
           ) : null}
         </div>

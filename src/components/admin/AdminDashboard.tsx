@@ -5,7 +5,6 @@ import { ErrorState } from "../ErrorState";
 import { LoadingState } from "../LoadingState";
 import { SearchBar } from "../SearchBar";
 import { AdminConfirmDialog } from "./AdminConfirmDialog";
-import { AdminHiddenProducts } from "./AdminHiddenProducts";
 import { AdminProductForm } from "./AdminProductForm";
 import { AdminProductList } from "./AdminProductList";
 import { AdminProductTable } from "./AdminProductTable";
@@ -52,6 +51,13 @@ export function AdminDashboard({
     [products, query]
   );
   const editorOpen = creating || selectedProduct !== null;
+  const currentProducts = showHidden ? hiddenProducts : visibleProducts;
+  const currentTitle = showHidden
+    ? `숨긴 상품 ${hiddenProducts.length}개`
+    : `등록된 상품 ${visibleProducts.length}개`;
+  const currentEmptyMessage = showHidden
+    ? "숨긴 상품이 없습니다."
+    : "표시 중인 상품이 없습니다.";
 
   const closeEditor = () => {
     setCreating(false);
@@ -93,8 +99,8 @@ export function AdminDashboard({
           disabled={actionBusy}
           onClick={() => {
             clearFeedback();
-            setCreating(true);
             setSelectedProduct(null);
+            setCreating((current) => !current);
           }}
         >
           새 상품 추가
@@ -102,9 +108,13 @@ export function AdminDashboard({
         <button
           type="button"
           className="admin-button admin-button-secondary"
-          onClick={() => setShowHidden((current) => !current)}
+          onClick={() => {
+            clearFeedback();
+            closeEditor();
+            setShowHidden((current) => !current);
+          }}
         >
-          숨긴 상품 {showHidden ? "닫기" : "보기"}
+          {showHidden ? "등록된 상품 보기" : "숨긴 상품 보기"}
         </button>
         <button
           type="button"
@@ -129,6 +139,14 @@ export function AdminDashboard({
           product={selectedProduct}
           onCancel={closeEditor}
           onHide={(product) => setHideTarget(product)}
+          onRestore={(product) => {
+            void restoreProduct(product.id).then(() => {
+              closeEditor();
+              setShowHidden(false);
+            }).catch(() => {
+              // Error text is surfaced by the hook.
+            });
+          }}
           onSubmit={async (input) => {
             if (selectedProduct) {
               const updatedProduct = await updateProduct(selectedProduct.id, input);
@@ -144,49 +162,46 @@ export function AdminDashboard({
 
       <section className="admin-section" aria-labelledby="admin-visible-title">
         <div className="admin-section-heading">
-          <h2 id="admin-visible-title">등록된 상품 {visibleProducts.length}개</h2>
+          <h2 id="admin-visible-title">{currentTitle}</h2>
         </div>
         {loading ? (
           <LoadingState message="상품을 불러오는 중..." />
         ) : (
           <>
             <AdminProductTable
-              emptyMessage="표시 중인 상품이 없습니다."
-              products={visibleProducts}
+              emptyMessage={currentEmptyMessage}
+              products={currentProducts}
+              restoreBusy={action === "restoring"}
+              showRestore={showHidden}
               onEdit={(product) => {
                 clearFeedback();
                 setCreating(false);
                 setSelectedProduct(product);
+              }}
+              onRestore={(product) => {
+                void restoreProduct(product.id).catch(() => {
+                  // Error text is surfaced by the hook.
+                });
               }}
             />
             <AdminProductList
-              emptyMessage="표시 중인 상품이 없습니다."
-              products={visibleProducts}
+              emptyMessage={currentEmptyMessage}
+              products={currentProducts}
+              restoreBusy={action === "restoring"}
               onEdit={(product) => {
                 clearFeedback();
                 setCreating(false);
                 setSelectedProduct(product);
               }}
+              onRestore={showHidden ? (product) => {
+                void restoreProduct(product.id).catch(() => {
+                  // Error text is surfaced by the hook.
+                });
+              } : undefined}
             />
           </>
         )}
       </section>
-
-      <AdminHiddenProducts
-        expanded={showHidden}
-        products={hiddenProducts}
-        restoreBusy={action === "restoring"}
-        onEdit={(product) => {
-          clearFeedback();
-          setCreating(false);
-          setSelectedProduct(product);
-        }}
-        onRestore={(product) => {
-          void restoreProduct(product.id).catch(() => {
-            // Error text is surfaced by the hook.
-          });
-        }}
-      />
 
       {hideTarget ? (
         <AdminConfirmDialog
