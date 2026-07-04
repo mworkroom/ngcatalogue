@@ -14,6 +14,7 @@ export function LanguageSwitch({ language, onChange }: LanguageSwitchProps) {
       <button
         type="button"
         className={language === "pt" ? "active" : ""}
+        aria-label="Português"
         aria-pressed={language === "pt"}
         onClick={() => onChange("pt")}
       >
@@ -22,10 +23,11 @@ export function LanguageSwitch({ language, onChange }: LanguageSwitchProps) {
       <button
         type="button"
         className={language === "ko" ? "active" : ""}
+        aria-label="한국어"
         aria-pressed={language === "ko"}
         onClick={() => onChange("ko")}
       >
-        한국어
+        한
       </button>
     </div>
   );

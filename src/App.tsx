@@ -382,12 +382,13 @@ function Header({
 }: HeaderProps) {
   const t = dictionary[language];
   const logoutLabel = mode === "center" ? t.centerLogout : t.businessLogout;
+  const title = mode === "center" ? t.centerTitle : t.title;
 
   return (
     <header className="topbar">
-      <div className="topbar-spacer" aria-hidden="true" />
-      <h1>{t.appName}</h1>
+      <h1>{title}</h1>
       <div className="topbar-actions">
+        <LanguageSwitch language={language} onChange={onLanguageChange} />
         <details className="topbar-menu">
           <summary aria-label={t.menu}>⋮</summary>
           <div className="topbar-menu-panel">
@@ -401,7 +402,6 @@ function Header({
                 {logoutLabel}
               </button>
             ) : null}
-            <LanguageSwitch language={language} onChange={onLanguageChange} />
           </div>
         </details>
       </div>
