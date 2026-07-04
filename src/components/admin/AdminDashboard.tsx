@@ -7,6 +7,7 @@ import { AdminConfirmDialog } from "./AdminConfirmDialog";
 import { AdminHiddenProducts } from "./AdminHiddenProducts";
 import { AdminProductForm } from "./AdminProductForm";
 import { AdminProductList } from "./AdminProductList";
+import { AdminProductTable } from "./AdminProductTable";
 
 interface AdminDashboardProps {
   busy: boolean;
@@ -142,15 +143,26 @@ export function AdminDashboard({
         {loading ? (
           <LoadingState message="상품을 불러오는 중..." />
         ) : (
-          <AdminProductList
-            emptyMessage="표시 중인 상품이 없습니다."
-            products={visibleProducts}
-            onEdit={(product) => {
-              clearFeedback();
-              setCreating(false);
-              setSelectedProduct(product);
-            }}
-          />
+          <>
+            <AdminProductTable
+              emptyMessage="표시 중인 상품이 없습니다."
+              products={visibleProducts}
+              onEdit={(product) => {
+                clearFeedback();
+                setCreating(false);
+                setSelectedProduct(product);
+              }}
+            />
+            <AdminProductList
+              emptyMessage="표시 중인 상품이 없습니다."
+              products={visibleProducts}
+              onEdit={(product) => {
+                clearFeedback();
+                setCreating(false);
+                setSelectedProduct(product);
+              }}
+            />
+          </>
         )}
       </section>
 

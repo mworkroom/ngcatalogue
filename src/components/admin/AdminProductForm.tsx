@@ -77,7 +77,7 @@ export function AdminProductForm({
       <div className="admin-editor-heading">
         <div>
           <h2 id="admin-editor-title">{title}</h2>
-          {product ? <p>ID {product.id}</p> : <p>새 상품 정보를 입력하세요.</p>}
+          {!product ? <p>새 상품 정보를 입력하세요.</p> : null}
         </div>
         <button
           type="button"

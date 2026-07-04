@@ -896,11 +896,6 @@ details.product-card summary:active {
   margin-bottom: 12px;
 }
 
-.admin-product-list {
-  display: grid;
-  gap: 10px;
-}
-
 .admin-product-card {
   display: grid;
   gap: 10px;
@@ -959,6 +954,77 @@ details.product-card summary:active {
   padding: 20px 8px;
   color: var(--muted);
   text-align: center;
+}
+
+.admin-product-list {
+  display: none;
+  gap: 10px;
+}
+
+.admin-product-table-card {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  overscroll-behavior: contain;
+}
+
+.admin-product-table {
+  min-width: 980px;
+  table-layout: auto;
+}
+
+.admin-product-table th,
+.admin-product-table td {
+  padding: 10px 11px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.admin-product-table th:first-child,
+.admin-product-table td:first-child {
+  position: sticky;
+  left: 0;
+  width: 240px;
+  min-width: 240px;
+  box-shadow: 1px 0 0 var(--line);
+}
+
+.admin-product-table th:first-child {
+  z-index: 4;
+  background: var(--accent-soft);
+}
+
+.admin-product-table td:first-child {
+  z-index: 1;
+  background: var(--panel);
+}
+
+.admin-product-table tbody tr:hover td:first-child {
+  background: #fafbfc;
+}
+
+.admin-product-table td:nth-child(2) {
+  min-width: 190px;
+  text-align: left;
+}
+
+.admin-product-table td:last-child,
+.admin-product-table th:last-child {
+  min-width: 132px;
+  text-align: left;
+}
+
+.admin-table-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.admin-table-actions .admin-button {
+  width: auto;
+  min-height: 38px;
+  padding: 0 10px;
+  white-space: nowrap;
 }
 
 .admin-product-form {
@@ -1112,6 +1178,14 @@ details.product-card summary:active {
 
   .admin-product-prices {
     grid-template-columns: 1fr;
+  }
+
+  .admin-product-table-card {
+    display: none;
+  }
+
+  .admin-product-list {
+    display: grid;
   }
 }
 

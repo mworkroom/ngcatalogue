@@ -1,5 +1,6 @@
 import type { AdminProduct } from "../../types/product";
 import { AdminProductList } from "./AdminProductList";
+import { AdminProductTable } from "./AdminProductTable";
 
 interface AdminHiddenProductsProps {
   expanded: boolean;
@@ -34,13 +35,23 @@ export function AdminHiddenProducts({
         </button>
       </div>
       {expanded ? (
-        <AdminProductList
-          emptyMessage="숨긴 상품이 없습니다."
-          products={products}
-          restoreBusy={restoreBusy}
-          onEdit={onEdit}
-          onRestore={onRestore}
-        />
+        <>
+          <AdminProductTable
+            emptyMessage="숨긴 상품이 없습니다."
+            products={products}
+            restoreBusy={restoreBusy}
+            showRestore
+            onEdit={onEdit}
+            onRestore={onRestore}
+          />
+          <AdminProductList
+            emptyMessage="숨긴 상품이 없습니다."
+            products={products}
+            restoreBusy={restoreBusy}
+            onEdit={onEdit}
+            onRestore={onRestore}
+          />
+        </>
       ) : null}
     </section>
   );
