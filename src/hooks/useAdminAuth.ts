@@ -1,9 +1,14 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  getAdminRedirectUrl,
   hasCatalogueAdminAccess
 } from "../lib/adminAccess";
+import {
+  clearPostAuthRoute,
+  getOAuthRedirectUrl,
+  readAndClearAuthError,
+  storeAdminPostAuthRoute
+} from "../lib/authRedirect";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 export type AdminAuthStatus =
@@ -43,10 +48,12 @@ export function useAdminAuth() {
     }
 
     if (!session?.user) {
+      const authError = readAndClearAuthError();
+
       setState({
-        status: "signed-out",
+        status: authError ? "error" : "signed-out",
         user: null,
-        error: null
+        error: authError
       });
       return;
     }
@@ -151,16 +158,18 @@ export function useAdminAuth() {
     }
 
     setAction("signing-in");
+    storeAdminPostAuthRoute();
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: getAdminRedirectUrl()
+        redirectTo: getOAuthRedirectUrl()
       }
     });
 
     if (error && mountedRef.current) {
       console.error(error);
+      clearPostAuthRoute();
       setAction("idle");
       setState({
         status: "error",
@@ -242,16 +251,18 @@ export function useAdminAuth() {
       error: null
     });
     setAction("signing-in");
+    storeAdminPostAuthRoute();
 
     const { error: signInError } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: getAdminRedirectUrl()
+        redirectTo: getOAuthRedirectUrl()
       }
     });
 
     if (signInError && mountedRef.current) {
       console.error(signInError);
+      clearPostAuthRoute();
       setAction("idle");
       setState({
         status: "error",

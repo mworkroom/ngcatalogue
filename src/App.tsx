@@ -18,18 +18,46 @@ import { useAdminAuth } from "./hooks/useAdminAuth";
 import { useCenterSession } from "./hooks/useCenterSession";
 import { useProducts } from "./hooks/useProducts";
 import { dictionary } from "./i18n";
+import {
+  cleanOAuthCallbackUrl,
+  clearPostAuthRoute,
+  getOAuthCallbackErrorMessage,
+  readPostAuthRoute,
+  storeAuthError
+} from "./lib/authRedirect";
+import { isSupabaseConfigured, supabase } from "./lib/supabase";
 import type { CatalogueMode, Language } from "./types/product";
 import { searchProducts } from "./utils/productSearch";
 import { sortProducts } from "./utils/productSort";
 
 export default function App() {
+  const restoringPostAuthRoute = usePostAuthRouteRestore();
   const route = useAppRoute();
+
+  if (restoringPostAuthRoute) {
+    return <AuthCallbackLoading />;
+  }
 
   if (route === "admin") {
     return <AdminRoute />;
   }
 
   return <CatalogueRoute mode={route} />;
+}
+
+function AuthCallbackLoading() {
+  useEffect(() => {
+    document.documentElement.lang = "ko-KR";
+    document.title = "로그인 확인";
+  }, []);
+
+  return (
+    <main className="app app-admin">
+      <section className="access-panel admin-panel admin-status-panel">
+        <LoadingState message="로그인 상태를 확인하는 중입니다." />
+      </section>
+    </main>
+  );
 }
 
 function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
@@ -319,6 +347,103 @@ function useAppRoute() {
 function normalizeRoute(route: string) {
   const pathOnly = route.split(/[?#]/, 1)[0].replace(/\/+$/, "");
   return pathOnly || "/";
+}
+
+function usePostAuthRouteRestore() {
+  const [checking, setChecking] = useState(() =>
+    Boolean(readPostAuthRoute())
+  );
+
+  useEffect(() => {
+    const postAuthRoute = readPostAuthRoute();
+
+    if (!postAuthRoute) {
+      setChecking(false);
+      return;
+    }
+
+    let isMounted = true;
+    let completed = false;
+    let unsubscribeAuthListener: (() => void) | null = null;
+
+    const finish = () => {
+      window.setTimeout(() => {
+        if (isMounted) {
+          setChecking(false);
+        }
+      }, 0);
+    };
+
+    const returnToPostAuthRoute = () => {
+      if (completed) {
+        return;
+      }
+
+      completed = true;
+      unsubscribeAuthListener?.();
+      unsubscribeAuthListener = null;
+      clearPostAuthRoute();
+      cleanOAuthCallbackUrl();
+      window.location.hash = postAuthRoute;
+      finish();
+    };
+
+    const oauthError = getOAuthCallbackErrorMessage();
+
+    if (oauthError) {
+      const message = `Google OAuth 오류: ${oauthError}`;
+      console.error(message);
+      storeAuthError(message);
+      returnToPostAuthRoute();
+
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    if (!isSupabaseConfigured || !supabase) {
+      returnToPostAuthRoute();
+
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        returnToPostAuthRoute();
+      }
+    });
+    unsubscribeAuthListener = () => subscription.unsubscribe();
+
+    void supabase.auth
+      .getSession()
+      .then(({ error }) => {
+        if (error) {
+          throw error;
+        }
+
+        returnToPostAuthRoute();
+      })
+      .catch((error) => {
+        const message = "OAuth 콜백 세션 확인 중 문제가 발생했습니다.";
+        console.error(
+          message,
+          error instanceof Error ? error.message : String(error)
+        );
+        storeAuthError(message);
+        returnToPostAuthRoute();
+      });
+
+    return () => {
+      isMounted = false;
+      unsubscribeAuthListener?.();
+    };
+  }, []);
+
+  return checking;
 }
 
 function getCenterProductsErrorMessage(

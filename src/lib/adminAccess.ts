@@ -20,7 +20,3 @@ export async function hasCatalogueAdminAccess(userId: string) {
 
   return data?.role === "admin";
 }
-
-export function getAdminRedirectUrl() {
-  return `${window.location.origin}${window.location.pathname}#/admin`;
-}
