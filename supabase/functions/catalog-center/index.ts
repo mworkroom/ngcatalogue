@@ -12,13 +12,8 @@ const CENTER_SELECT_COLUMNS = [
   "consumer_price",
   "brazil_price",
   "brazil_pv",
-  "korea_pv",
-  "korea_price",
-  "weight",
-  "memo",
   "is_set",
-  "pack_quantity",
-  "updated_at"
+  "pack_quantity"
 ].join(",");
 
 const corsHeaders = {

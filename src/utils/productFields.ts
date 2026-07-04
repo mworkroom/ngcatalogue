@@ -10,15 +10,7 @@ export function getColumnLabel(column: ProductColumn, language: Language) {
   return dictionary[language].columns[column];
 }
 
-export function getColumnClassName(column: ProductColumn) {
-  if (column === "memo") {
-    return "text-column memo-column";
-  }
-
-  if (column === "updated_at") {
-    return "text-column date-column";
-  }
-
+export function getColumnClassName(_column: ProductColumn) {
   return "number-column";
 }
 
@@ -44,58 +36,5 @@ export function formatProductColumn(
         "brazil_pv" in product ? product.brazil_pv : null,
         language
       );
-    case "korea_pv":
-      return formatNumber(
-        "korea_pv" in product ? product.korea_pv : null,
-        language
-      );
-    case "korea_price":
-      return formatNumber(
-        "korea_price" in product ? product.korea_price : null,
-        language
-      );
-    case "weight":
-      return formatWeight("weight" in product ? product.weight : null, language);
-    case "memo":
-      return "memo" in product && product.memo?.trim()
-        ? product.memo.trim()
-        : "—";
-    case "updated_at":
-      return formatDate(
-        "updated_at" in product ? product.updated_at : null,
-        language
-      );
   }
-}
-
-function formatWeight(value: unknown, language: Language) {
-  if (value === null || value === undefined || value === "") {
-    return "—";
-  }
-
-  const number = Number(value);
-
-  if (!Number.isFinite(number)) {
-    return String(value);
-  }
-
-  return `${formatNumber(number, language)} g`;
-}
-
-function formatDate(value: string | null, language: Language) {
-  if (!value) {
-    return "—";
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  return new Intl.DateTimeFormat(language === "pt" ? "pt-BR" : "ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  }).format(date);
 }

@@ -5,6 +5,7 @@ export const dictionary = {
     locale: "pt-BR",
     title: "Preços Atomy",
     centerTitle: "Preços Atomy (Centro)",
+    businessAccessTitle: "Acesso do catálogo",
     centerAccessTitle: "Acesso do Centro",
     search: "Pesquisar produto",
     print: "Imprimir PDF",
@@ -20,6 +21,12 @@ export const dictionary = {
     setup:
       "Configure VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY.",
     loadError: "Não foi possível carregar os produtos.",
+    businessCodeLabel: "Digite o código de acesso",
+    businessLoginButton: "Entrar",
+    businessValidating: "Validando...",
+    businessLogout: "Sair",
+    checkingBusinessSession: "Verificando acesso...",
+    loadingBusinessProducts: "Carregando produtos...",
     centerCodeLabel: "Digite o código de acesso",
     centerLoginButton: "Entrar",
     centerValidating: "Validando...",
@@ -27,7 +34,10 @@ export const dictionary = {
     checkingCenterSession: "Verificando acesso...",
     loadingCenterProducts: "Carregando produtos do centro...",
     invalidAccessCode: "Código inválido.",
+    expiredBusinessSession: "A sessão expirou. Digite o código novamente.",
     expiredCenterSession: "A sessão expirou. Digite o código novamente.",
+    businessNetworkError: "Não foi possível conectar ao acesso do catálogo.",
+    businessServerError: "O catálogo não está disponível agora.",
     centerNetworkError: "Não foi possível conectar ao acesso do centro.",
     centerServerError: "O acesso do centro não está disponível agora.",
     columns: {
@@ -36,18 +46,14 @@ export const dictionary = {
       business_price: "Distribuidor",
       consumer_price: "Consumidor",
       brazil_price: "Site",
-      brazil_pv: "PV",
-      korea_pv: "PV Coreia",
-      korea_price: "Preço Coreia",
-      weight: "Peso",
-      memo: "Observação",
-      updated_at: "Atualizado em"
+      brazil_pv: "PV"
     }
   },
   ko: {
     locale: "ko-KR",
     title: "애터미 가격표",
     centerTitle: "애터미 가격표 (센터 전용)",
+    businessAccessTitle: "사업자 카탈로그",
     centerAccessTitle: "센터 전용",
     search: "상품명 검색",
     print: "PDF 출력",
@@ -63,6 +69,12 @@ export const dictionary = {
     setup:
       "VITE_SUPABASE_URL과 VITE_SUPABASE_PUBLISHABLE_KEY를 설정해 주세요.",
     loadError: "상품을 불러오지 못했습니다.",
+    businessCodeLabel: "접근 코드를 입력하세요",
+    businessLoginButton: "입장",
+    businessValidating: "확인 중...",
+    businessLogout: "로그아웃",
+    checkingBusinessSession: "사업자 접속을 확인하는 중...",
+    loadingBusinessProducts: "상품을 불러오는 중...",
     centerCodeLabel: "접근 코드를 입력하세요",
     centerLoginButton: "입장",
     centerValidating: "확인 중...",
@@ -70,7 +82,10 @@ export const dictionary = {
     checkingCenterSession: "센터 접속을 확인하는 중...",
     loadingCenterProducts: "센터 상품을 불러오는 중...",
     invalidAccessCode: "코드가 올바르지 않습니다.",
+    expiredBusinessSession: "세션이 만료되었습니다. 코드를 다시 입력해 주세요.",
     expiredCenterSession: "세션이 만료되었습니다. 코드를 다시 입력해 주세요.",
+    businessNetworkError: "사업자 접속에 연결하지 못했습니다.",
+    businessServerError: "현재 사업자 카탈로그를 사용할 수 없습니다.",
     centerNetworkError: "센터 접속에 연결하지 못했습니다.",
     centerServerError: "현재 센터 접속을 사용할 수 없습니다.",
     columns: {
@@ -79,12 +94,7 @@ export const dictionary = {
       business_price: "사업자",
       consumer_price: "소비자",
       brazil_price: "사이트",
-      brazil_pv: "PV",
-      korea_pv: "한국 PV",
-      korea_price: "한국 가격",
-      weight: "중량",
-      memo: "메모",
-      updated_at: "업데이트"
+      brazil_pv: "PV"
     }
   }
 } as const;

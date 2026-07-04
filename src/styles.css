@@ -220,7 +220,7 @@ table {
 }
 
 .center-table {
-  min-width: 1320px;
+  min-width: 860px;
   table-layout: auto;
 }
 
@@ -253,21 +253,8 @@ td:first-child {
   font-size: 13px;
 }
 
-.text-column {
-  text-align: left;
-}
-
 .number-column {
   text-align: right;
-  white-space: nowrap;
-}
-
-.memo-column {
-  min-width: 220px;
-}
-
-.date-column {
-  min-width: 120px;
   white-space: nowrap;
 }
 
@@ -436,11 +423,6 @@ details.product-card summary:active {
 .detail-value {
   font-weight: 750;
   text-align: right;
-}
-
-.text-value {
-  text-align: left;
-  overflow-wrap: anywhere;
 }
 
 .empty {
@@ -741,7 +723,4 @@ details.product-card summary:active {
     box-shadow: none;
   }
 
-  .app-center .memo-column {
-    min-width: 0;
-  }
 }

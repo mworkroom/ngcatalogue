@@ -1,6 +1,6 @@
 export type Language = "pt" | "ko";
 
-export type CatalogueMode = "public" | "center";
+export type CatalogueMode = "business" | "center";
 
 export interface ProductNameFields {
   id: string;
@@ -10,26 +10,25 @@ export interface ProductNameFields {
   pack_quantity: number | null;
 }
 
-export interface PublicProduct extends ProductNameFields {
+export interface BusinessProduct extends ProductNameFields {
   name_ko: string;
   business_price: number | null;
   consumer_price: number | null;
   brazil_price: number | null;
 }
 
-export interface CenterProduct extends PublicProduct {
+export interface CenterProduct extends ProductNameFields {
+  name_ko: string;
   handling_fee: number | null;
   brazil_pv: number | null;
-  korea_pv: number | null;
-  korea_price: number | null;
-  weight: number | null;
-  memo: string | null;
-  updated_at: string | null;
+  business_price: number | null;
+  consumer_price: number | null;
+  brazil_price: number | null;
 }
 
-export type CatalogueProduct = PublicProduct | CenterProduct;
+export type CatalogueProduct = BusinessProduct | CenterProduct;
 
-export type PublicPriceColumn =
+export type BusinessPriceColumn =
   | "business_price"
   | "consumer_price"
   | "brazil_price";
@@ -39,11 +38,6 @@ export type CenterProductColumn =
   | "business_price"
   | "consumer_price"
   | "brazil_price"
-  | "brazil_pv"
-  | "korea_pv"
-  | "korea_price"
-  | "weight"
-  | "memo"
-  | "updated_at";
+  | "brazil_pv";
 
-export type ProductColumn = PublicPriceColumn | CenterProductColumn;
+export type ProductColumn = BusinessPriceColumn | CenterProductColumn;

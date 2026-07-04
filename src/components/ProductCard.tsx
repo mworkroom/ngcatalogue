@@ -27,7 +27,7 @@ export function ProductCard({ mode, language, product }: ProductCardProps) {
           language={language}
           className="summary-name"
         />
-        {mode === "public" ? (
+        {mode === "business" ? (
           <span className="summary-price">
             {formatProductColumn(product, "business_price", language)}
           </span>
@@ -39,11 +39,7 @@ export function ProductCard({ mode, language, product }: ProductCardProps) {
             <span className="detail-label">
               {getColumnLabel(column, language)}
             </span>
-            <span
-              className={
-                column === "memo" ? "detail-value text-value" : "detail-value"
-              }
-            >
+            <span className="detail-value">
               {formatProductColumn(product, column, language)}
             </span>
           </div>

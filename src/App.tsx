@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { BusinessAccessForm } from "./components/BusinessAccessForm";
 import { CenterAccessForm } from "./components/CenterAccessForm";
-import { CenterSessionControls } from "./components/CenterSessionControls";
+import { SessionControls } from "./components/SessionControls";
 import { AdminLogin } from "./components/AdminLogin";
 import { AdminPlaceholder } from "./components/AdminPlaceholder";
 import { AdminUnauthorized } from "./components/AdminUnauthorized";
@@ -11,12 +12,16 @@ import { ProductCardList } from "./components/ProductCardList";
 import { ProductTable } from "./components/ProductTable";
 import { SearchBar } from "./components/SearchBar";
 import {
+  type BusinessProductsError,
+  useBusinessProducts
+} from "./hooks/useBusinessProducts";
+import {
   type CenterProductsError,
   useCenterProducts
 } from "./hooks/useCenterProducts";
 import { useAdminAuth } from "./hooks/useAdminAuth";
+import { useBusinessSession } from "./hooks/useBusinessSession";
 import { useCenterSession } from "./hooks/useCenterSession";
-import { useProducts } from "./hooks/useProducts";
 import { dictionary } from "./i18n";
 import {
   cleanOAuthCallbackUrl,
@@ -62,9 +67,18 @@ function AuthCallbackLoading() {
 
 function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
   const isCenterMode = mode === "center";
+  const isBusinessMode = mode === "business";
   const [language, setLanguage] = useState<Language>("pt");
   const [query, setQuery] = useState("");
-  const publicState = useProducts(!isCenterMode);
+  const {
+    session: businessSession,
+    checking: checkingBusinessSession,
+    validating: validatingBusinessSession,
+    error: businessSessionError,
+    login: loginBusinessSession,
+    logout: logoutBusinessSession,
+    clearSession: clearBusinessSession
+  } = useBusinessSession(isBusinessMode);
   const {
     session: centerSession,
     checking: checkingCenterSession,
@@ -77,13 +91,20 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
   const handleCenterUnauthorized = useCallback(() => {
     clearCenterSession("expired-session");
   }, [clearCenterSession]);
+  const handleBusinessUnauthorized = useCallback(() => {
+    clearBusinessSession("expired-session");
+  }, [clearBusinessSession]);
+  const businessState = useBusinessProducts(
+    isBusinessMode ? businessSession?.token ?? null : null,
+    handleBusinessUnauthorized
+  );
   const centerState = useCenterProducts(
     isCenterMode ? centerSession?.token ?? null : null,
     handleCenterUnauthorized
   );
   const t = dictionary[language];
-  const products = isCenterMode ? centerState.products : publicState.products;
-  const loading = isCenterMode ? centerState.loading : publicState.loading;
+  const products = isCenterMode ? centerState.products : businessState.products;
+  const loading = isCenterMode ? centerState.loading : businessState.loading;
 
   const visibleProducts = useMemo(() => {
     return sortProducts(searchProducts(products, query), language, query);
@@ -93,6 +114,60 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
     document.documentElement.lang = language === "pt" ? "pt-BR" : "ko";
     document.title = isCenterMode ? t.centerTitle : t.title;
   }, [isCenterMode, language, t.centerTitle, t.title]);
+
+  if (isBusinessMode && checkingBusinessSession) {
+    return (
+      <main className="app app-public">
+        <Header
+          mode={mode}
+          language={language}
+          onLanguageChange={setLanguage}
+        />
+        <section className="access-panel">
+          <LoadingState message={t.checkingBusinessSession} />
+        </section>
+      </main>
+    );
+  }
+
+  if (isBusinessMode && !businessSession) {
+    return (
+      <main className="app app-public">
+        <Header
+          mode={mode}
+          language={language}
+          onLanguageChange={setLanguage}
+        />
+        <BusinessAccessForm
+          language={language}
+          validating={validatingBusinessSession}
+          error={businessSessionError}
+          onSubmit={loginBusinessSession}
+        />
+      </main>
+    );
+  }
+
+  if (isBusinessMode && businessState.error) {
+    return (
+      <main className="app app-public">
+        <Header
+          mode={mode}
+          language={language}
+          onLanguageChange={setLanguage}
+          onLogout={logoutBusinessSession}
+        />
+        <section className="access-panel">
+          <ErrorState
+            message={getBusinessProductsErrorMessage(
+              businessState.error,
+              language
+            )}
+          />
+        </section>
+      </main>
+    );
+  }
 
   if (isCenterMode && checkingCenterSession) {
     return (
@@ -147,18 +222,10 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
 
   const errorMessage = isCenterMode
     ? getCenterProductsErrorMessage(centerState.error, language)
-    : publicState.error?.type === "missing-config"
-      ? t.setup
-      : publicState.error
-        ? t.loadError
-        : "";
-  const errorDetail =
-    !isCenterMode && publicState.error?.type === "load-error"
-      ? publicState.error.message
-      : undefined;
+    : getBusinessProductsErrorMessage(businessState.error, language);
   const showEmpty =
     !loading &&
-    (isCenterMode ? !centerState.error : !publicState.error);
+    (isCenterMode ? !centerState.error : !businessState.error);
 
   return (
     <main className={`app ${isCenterMode ? "app-center" : "app-public"}`}>
@@ -166,7 +233,7 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
         mode={mode}
         language={language}
         onLanguageChange={setLanguage}
-        onLogout={isCenterMode ? logoutCenterSession : undefined}
+        onLogout={isCenterMode ? logoutCenterSession : logoutBusinessSession}
       />
 
       <SearchBar
@@ -180,13 +247,15 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
       <div className="meta" aria-live="polite">
         {loading ? (
           <LoadingState
-            message={isCenterMode ? t.loadingCenterProducts : t.loading}
+            message={
+              isCenterMode ? t.loadingCenterProducts : t.loadingBusinessProducts
+            }
           />
         ) : (
           <span>{t.count(visibleProducts.length)}</span>
         )}
         {errorMessage ? (
-          <ErrorState message={errorMessage} detail={errorDetail} />
+          <ErrorState message={errorMessage} />
         ) : (
           <span />
         )}
@@ -294,7 +363,10 @@ function Header({
       <h1>{mode === "center" ? t.centerTitle : t.title}</h1>
       <div className="topbar-actions">
         {onLogout ? (
-          <CenterSessionControls language={language} onLogout={onLogout} />
+          <SessionControls
+            label={mode === "center" ? t.centerLogout : t.businessLogout}
+            onLogout={onLogout}
+          />
         ) : null}
         <LanguageSwitch language={language} onChange={onLanguageChange} />
       </div>
@@ -313,7 +385,7 @@ function getAppRoute(): AppRoute {
       return "admin";
     }
 
-    return hashRoute === "/catalog/center" ? "center" : "public";
+    return hashRoute === "/catalog/center" ? "center" : "business";
   }
 
   const pathname = normalizeRoute(window.location.pathname);
@@ -321,7 +393,7 @@ function getAppRoute(): AppRoute {
     return "admin";
   }
 
-  return pathname.endsWith("/catalog/center") ? "center" : "public";
+  return pathname.endsWith("/catalog/center") ? "center" : "business";
 }
 
 function useAppRoute() {
@@ -465,4 +537,25 @@ function getCenterProductsErrorMessage(
   }
 
   return t.centerServerError;
+}
+
+function getBusinessProductsErrorMessage(
+  error: BusinessProductsError | null,
+  language: Language
+) {
+  if (!error || error === "unauthorized") {
+    return "";
+  }
+
+  const t = dictionary[language];
+
+  if (error === "missing-config") {
+    return t.setup;
+  }
+
+  if (error === "network") {
+    return t.businessNetworkError;
+  }
+
+  return t.businessServerError;
 }

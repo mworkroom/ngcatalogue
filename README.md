@@ -11,7 +11,7 @@ VITE_SUPABASE_URL=
 VITE_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-`CENTER_ACCESS_CODE`, `CENTER_SESSION_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`는 프론트엔드 환경 파일이나 빌드 산출물에 넣지 않습니다.
+`BUSINESS_ACCESS_CODE`, `BUSINESS_SESSION_SECRET`, `CENTER_ACCESS_CODE`, `CENTER_SESSION_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`는 프론트엔드 환경 파일이나 빌드 산출물에 넣지 않습니다.
 
 ## Routes
 
@@ -21,9 +21,9 @@ VITE_SUPABASE_PUBLISHABLE_KEY=
 /admin
 ```
 
-`/catalog`는 공개 카탈로그이며 `catalog_public_products` View에서 공개 컬럼만 조회합니다. 접근 코드나 로그인 없이 동작해야 합니다.
+`/catalog`는 사업자 카탈로그이며, Supabase Edge Function `catalog-business`에서 발급한 서명 세션 토큰이 있을 때만 사업자용 상품 컬럼을 조회합니다. 기존 공개 View 직접 조회 방식은 더 이상 사용하지 않습니다.
 
-`/catalog/center`는 센터 전용 카탈로그이며, Supabase Edge Function `catalog-center`에서 발급한 서명 세션 토큰이 있을 때만 `catalog_products`의 센터용 컬럼을 조회합니다.
+`/catalog/center`는 센터 전용 카탈로그이며, Supabase Edge Function `catalog-center`에서 발급한 서명 세션 토큰이 있을 때만 센터용 상품 컬럼을 조회합니다.
 
 GitHub Pages 배포에서는 해시 라우트를 사용합니다.
 
@@ -124,35 +124,79 @@ values (
 
 ## Supabase Edge Function
 
-센터 접근은 `supabase/functions/catalog-center/index.ts`에서 처리합니다.
+사업자 접근은 `supabase/functions/catalog-business/index.ts`에서 처리하고, 센터 접근은 `supabase/functions/catalog-center/index.ts`에서 처리합니다. 두 접근 레벨은 서로 다른 8자리 접근 코드, 세션 secret, localStorage key를 사용합니다.
 
-지원 action:
+두 함수가 지원하는 action:
 
 ```text
 login
 products
 ```
 
-`login`은 8자리 숫자 접근 코드를 확인한 뒤 30일 동안 유효한 서명 JWT를 반환합니다. `products`는 JWT 서명, 만료 시간, `role: "center"`를 확인한 뒤 서비스 역할 키로 `catalog_products`에서 `is_visible = true`인 상품만 조회합니다.
+`login`은 8자리 숫자 접근 코드를 timing-safe 비교로 확인한 뒤 30일 동안 유효한 서명 JWT를 반환합니다. `products`는 JWT 서명, 만료 시간, 역할을 확인한 뒤 서비스 역할 키로 `catalog_products`에서 `is_visible = true`인 상품만 조회합니다.
+
+사업자 함수는 다음 컬럼만 반환합니다.
+
+```text
+id
+name_ko
+name_pt
+business_price
+consumer_price
+brazil_price
+is_set
+pack_quantity
+```
+
+센터 함수는 다음 컬럼만 반환합니다.
+
+```text
+id
+name_ko
+name_pt
+handling_fee
+business_price
+consumer_price
+brazil_price
+brazil_pv
+is_set
+pack_quantity
+```
 
 ## Required Supabase Secrets
 
-실제 값은 Supabase Dashboard 또는 CLI에서만 설정합니다. 저장소에는 커밋하지 않습니다.
+실제 값은 Supabase Dashboard에서만 설정합니다. 저장소에는 커밋하지 않습니다.
 
-```bash
-supabase secrets set CENTER_ACCESS_CODE=YOUR_8_DIGIT_CODE
-supabase secrets set CENTER_SESSION_SECRET=YOUR_LONG_RANDOM_SECRET
+```text
+BUSINESS_ACCESS_CODE
+BUSINESS_SESSION_SECRET
+CENTER_ACCESS_CODE
+CENTER_SESSION_SECRET
+SUPABASE_URL
+SUPABASE_SERVICE_ROLE_KEY
 ```
 
-`SUPABASE_URL`과 `SUPABASE_SERVICE_ROLE_KEY`가 Edge Function 환경에서 사용 가능해야 합니다. Supabase 프로젝트 기본 환경에서 제공되지 않는 경우 Dashboard의 Function secrets에서 값을 설정합니다.
+`SUPABASE_URL`과 `SUPABASE_SERVICE_ROLE_KEY`는 Edge Function 안에서만 사용합니다. 프론트엔드에는 `VITE_SUPABASE_URL`과 `VITE_SUPABASE_PUBLISHABLE_KEY`만 설정합니다.
 
-## Deploy Edge Function
+## Deploy Edge Functions
 
-```bash
-supabase functions deploy catalog-center
+이 프로젝트의 Edge Function은 Supabase CLI가 아니라 Supabase Dashboard에서 수동으로 생성하거나 갱신합니다.
+
+1. Supabase Dashboard에서 `Edge Functions`로 이동합니다.
+2. `catalog-business` 함수를 만들고 `supabase/functions/catalog-business/index.ts` 내용을 반영합니다.
+3. `catalog-center` 함수를 열고 `supabase/functions/catalog-center/index.ts` 내용을 반영합니다.
+4. Dashboard의 Function secrets에서 위 필수 secret이 모두 설정되어 있는지 확인합니다.
+5. 프론트엔드를 배포한 뒤 `/catalog`와 `/catalog/center`를 각각 테스트합니다.
+
+사업자 카탈로그가 `catalog-business`를 통해 정상 조회되는 것을 확인한 뒤 마지막 보안 단계로 아래 SQL을 Supabase SQL Editor에서 수동 실행합니다.
+
+```sql
+revoke select
+on public.catalog_public_products
+from anon, authenticated;
 ```
 
-배포 뒤 `/catalog/center`에서 접근 코드 입력, 세션 유지, 로그아웃, 센터 상품 조회를 확인합니다.
+이 revoke 이후에도 `catalog-business`와 `catalog-center`는 서비스 역할 키를 함수 내부에서 사용하므로 계속 동작해야 합니다. SQL 실행 뒤 `/catalog` 사업자 접근을 다시 테스트합니다.
 
 ## Local Commands
 
