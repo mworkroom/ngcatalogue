@@ -1,8 +1,6 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  hasCatalogueAdminAccess
-} from "../lib/adminAccess";
+import { hasCatalogueAdminAccess } from "../lib/adminAccess";
 import {
   clearPostAuthRoute,
   getOAuthRedirectUrl,
@@ -28,7 +26,7 @@ interface AdminAuthState {
 }
 
 const missingConfigMessage =
-  "관리자 로그인을 사용하려면 Supabase 프론트엔드 환경 값을 설정해야 합니다.";
+  "관리자 로그인을 사용하려면 Supabase 환경 값을 설정해야 합니다.";
 
 export function useAdminAuth() {
   const [state, setState] = useState<AdminAuthState>({

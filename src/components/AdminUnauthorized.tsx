@@ -13,7 +13,7 @@ export function AdminUnauthorized({
 }: AdminUnauthorizedProps) {
   return (
     <section className="access-panel admin-panel" aria-labelledby="admin-title">
-      <h1 id="admin-title">관리자 권한이 없는 계정입니다.</h1>
+      <h1 id="admin-title">관리자 권한이 없는 계정입니다</h1>
       <p className="admin-account">로그인 계정: {email || "확인되지 않음"}</p>
       <div className="admin-actions">
         <button

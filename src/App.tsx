@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { BusinessAccessForm } from "./components/BusinessAccessForm";
 import { CenterAccessForm } from "./components/CenterAccessForm";
 import { AdminLogin } from "./components/AdminLogin";
-import { AdminPlaceholder } from "./components/AdminPlaceholder";
 import { AdminUnauthorized } from "./components/AdminUnauthorized";
+import { AdminDashboard } from "./components/admin/AdminDashboard";
 import { ErrorState } from "./components/ErrorState";
 import { LanguageSwitch } from "./components/LanguageSwitch";
 import { LoadingState } from "./components/LoadingState";
@@ -332,7 +332,7 @@ function AdminRoute() {
   if (state.status === "authorized" && state.user) {
     return (
       <main className="app app-admin">
-        <AdminPlaceholder
+        <AdminDashboard
           email={state.user.email ?? ""}
           busy={busy}
           onLogout={signOut}
