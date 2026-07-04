@@ -1,9 +1,9 @@
 {
   "id": "./",
-  "name": "애터미 한국·브라질 가격표",
-  "short_name": "애터미 가격표",
-  "description": "한국과 브라질의 애터미 제품 가격표",
-  "lang": "ko",
+  "name": "Lista de Preços Atomy Coreia-Brasil",
+  "short_name": "Preços Atomy",
+  "description": "Lista de Preços de Produtos Atomy para a Coreia do Sul e o Brasil",
+  "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
