@@ -20,18 +20,23 @@ export function AdminProductTable({
   onRestore
 }: AdminProductTableProps) {
   return (
-    <section className="admin-product-table-card">
-      <table className="admin-product-table">
+    <section className="table-card center-table-card admin-product-table-card">
+      <table className="center-table admin-product-table">
         <thead>
           <tr>
-            <th className="name-column">상품명</th>
-            <th>포르투갈어</th>
-            <th className="number-column">취급</th>
-            <th className="number-column">사업자</th>
-            <th className="number-column">소비자</th>
-            <th className="number-column">사이트</th>
-            <th className="number-column">PV</th>
-            <th>구성</th>
+            <th className="name-column">한국어 상품명</th>
+            <th>포르투갈어 상품명</th>
+            <th className="number-column">취급 수수료</th>
+            <th className="number-column">사업자 가격</th>
+            <th className="number-column">소비자 가격</th>
+            <th className="number-column">브라질 사이트 가격</th>
+            <th className="number-column">브라질 PV</th>
+            <th className="number-column">한국 가격</th>
+            <th className="number-column">한국 PV</th>
+            <th className="number-column">무게</th>
+            <th className="number-column">수량</th>
+            <th>세트 상품</th>
+            <th>메모</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -57,12 +62,22 @@ export function AdminProductTable({
               <td className="number-column">
                 {formatAdminNumber(product.brazil_pv)}
               </td>
-              <td>
-                <span className="product-badges">
-                  {product.is_set ? <SetBadge language="ko" /> : null}
-                  <QuantityBadge quantity={product.pack_quantity} />
-                </span>
+              <td className="number-column">
+                {formatAdminNumber(product.korea_price)}
               </td>
+              <td className="number-column">
+                {formatAdminNumber(product.korea_pv)}
+              </td>
+              <td className="number-column">
+                {formatAdminNumber(product.weight)}
+              </td>
+              <td className="number-column">
+                {formatAdminNumber(product.pack_quantity)}
+              </td>
+              <td>
+                {product.is_set ? <SetBadge language="ko" /> : "-"}
+              </td>
+              <td className="admin-memo-cell">{product.memo || "-"}</td>
               <td>
                 <div className="admin-table-actions">
                   <button
@@ -95,7 +110,24 @@ export function AdminProductTable({
   );
 }
 
-function formatAdminNumber(value: number | null) {
+export function AdminProductBadges({ product }: { product: AdminProduct }) {
+  const hasQuantityBadge = Boolean(
+    product.pack_quantity && product.pack_quantity > 1
+  );
+
+  if (!product.is_set && !hasQuantityBadge) {
+    return null;
+  }
+
+  return (
+    <span className="product-badges">
+      {product.is_set ? <SetBadge language="ko" /> : null}
+      <QuantityBadge quantity={product.pack_quantity} />
+    </span>
+  );
+}
+
+export function formatAdminNumber(value: number | null) {
   if (value === null) {
     return "-";
   }

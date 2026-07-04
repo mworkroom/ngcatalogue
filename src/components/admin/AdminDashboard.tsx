@@ -3,6 +3,7 @@ import { useAdminProducts } from "../../hooks/useAdminProducts";
 import type { AdminProduct } from "../../types/product";
 import { ErrorState } from "../ErrorState";
 import { LoadingState } from "../LoadingState";
+import { SearchBar } from "../SearchBar";
 import { AdminConfirmDialog } from "./AdminConfirmDialog";
 import { AdminHiddenProducts } from "./AdminHiddenProducts";
 import { AdminProductForm } from "./AdminProductForm";
@@ -64,38 +65,53 @@ export function AdminDashboard({
           <h1 id="admin-dashboard-title">상품 관리</h1>
           <p>{email || "관리자 계정"}</p>
         </div>
+        <div className="admin-header-actions">
+          <button
+            type="button"
+            className="admin-button admin-button-primary"
+            disabled={actionBusy}
+            onClick={() => {
+              clearFeedback();
+              setCreating(true);
+              setSelectedProduct(null);
+            }}
+          >
+            새 상품 추가
+          </button>
+          <button
+            type="button"
+            className="admin-button admin-button-secondary"
+            disabled={busy || actionBusy}
+            onClick={onLogout}
+          >
+            로그아웃
+          </button>
+        </div>
+      </header>
+
+      <SearchBar
+        value={query}
+        label="한국어 또는 포르투갈어 상품명"
+        printLabel="PDF 출력"
+        onChange={setQuery}
+        onPrint={() => window.print()}
+      />
+
+      <div className="admin-toolbar">
         <button
           type="button"
           className="admin-button admin-button-secondary"
-          disabled={busy || actionBusy}
-          onClick={onLogout}
+          disabled={loading}
+          onClick={() => void refresh()}
         >
-          로그아웃
+          새로고침
         </button>
-      </header>
-
-      <div className="admin-toolbar">
-        <label className="admin-search">
-          <span>상품 검색</span>
-          <input
-            value={query}
-            type="search"
-            autoComplete="off"
-            placeholder="한국어 또는 포르투갈어 상품명"
-            onChange={(event) => setQuery(event.target.value)}
-          />
-        </label>
         <button
           type="button"
-          className="admin-button admin-button-primary"
-          disabled={actionBusy}
-          onClick={() => {
-            clearFeedback();
-            setCreating(true);
-            setSelectedProduct(null);
-          }}
+          className="admin-button admin-button-secondary"
+          onClick={() => setShowHidden((current) => !current)}
         >
-          새 상품 추가
+          숨긴 상품 {showHidden ? "닫기" : "보기"} ({hiddenProducts.length})
         </button>
       </div>
 
@@ -131,14 +147,6 @@ export function AdminDashboard({
             <h2 id="admin-visible-title">표시 중인 상품</h2>
             <p>{visibleProducts.length}개</p>
           </div>
-          <button
-            type="button"
-            className="admin-button admin-button-secondary"
-            disabled={loading}
-            onClick={() => void refresh()}
-          >
-            새로고침
-          </button>
         </div>
         {loading ? (
           <LoadingState message="상품을 불러오는 중..." />

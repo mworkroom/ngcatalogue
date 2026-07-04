@@ -331,7 +331,7 @@ function AdminRoute() {
 
   if (state.status === "authorized" && state.user) {
     return (
-      <main className="app app-admin">
+      <main className="app app-center app-admin-dashboard-route">
         <AdminDashboard
           email={state.user.email ?? ""}
           busy={busy}

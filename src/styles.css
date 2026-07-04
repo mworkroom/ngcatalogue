@@ -804,6 +804,19 @@ details.product-card summary:active {
   padding: 16px;
 }
 
+.admin-header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.admin-header-actions .admin-button,
+.admin-toolbar .admin-button {
+  width: auto;
+}
+
 .admin-dashboard-header h1,
 .admin-section h2,
 .admin-editor h2,
@@ -823,26 +836,19 @@ details.product-card summary:active {
 }
 
 .admin-toolbar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  align-items: end;
-  padding: 14px;
+  justify-content: flex-end;
+  padding: 12px 0 14px;
 }
 
-.admin-search {
-  display: grid;
-  gap: 6px;
-}
-
-.admin-search span,
 .admin-product-form label span {
   color: var(--muted);
   font-size: 13px;
   font-weight: 800;
 }
 
-.admin-search input,
 .admin-product-form input,
 .admin-product-form textarea {
   width: 100%;
@@ -853,7 +859,6 @@ details.product-card summary:active {
   outline: none;
 }
 
-.admin-search input,
 .admin-product-form input {
   min-height: 46px;
   padding: 0 12px;
@@ -865,7 +870,6 @@ details.product-card summary:active {
   resize: vertical;
 }
 
-.admin-search input:focus,
 .admin-product-form input:focus,
 .admin-product-form textarea:focus {
   border-color: var(--accent);
@@ -882,7 +886,13 @@ details.product-card summary:active {
   font-weight: 800;
 }
 
-.admin-section,
+.admin-section {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .admin-editor {
   padding: 14px;
 }
@@ -970,7 +980,7 @@ details.product-card summary:active {
 }
 
 .admin-product-table {
-  min-width: 980px;
+  min-width: 1680px;
   table-layout: auto;
 }
 
@@ -1005,7 +1015,7 @@ details.product-card summary:active {
 }
 
 .admin-product-table td:nth-child(2) {
-  min-width: 190px;
+  min-width: 210px;
   text-align: left;
 }
 
@@ -1013,6 +1023,25 @@ details.product-card summary:active {
 .admin-product-table th:last-child {
   min-width: 132px;
   text-align: left;
+}
+
+.admin-memo-cell {
+  min-width: 260px;
+  max-width: 360px;
+  text-align: left;
+  white-space: normal;
+}
+
+.admin-card-subtitle {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-memo-row {
+  align-items: flex-start;
 }
 
 .admin-table-actions {
@@ -1151,7 +1180,6 @@ details.product-card summary:active {
   }
 
   .admin-dashboard-header,
-  .admin-toolbar,
   .admin-section-heading,
   .admin-editor-heading {
     align-items: stretch;
@@ -1159,7 +1187,9 @@ details.product-card summary:active {
   }
 
   .admin-toolbar {
+    display: grid;
     grid-template-columns: 1fr;
+    padding-top: 0;
   }
 
   .admin-dashboard-header .admin-button,
