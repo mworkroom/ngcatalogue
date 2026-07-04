@@ -79,14 +79,6 @@ export function AdminProductForm({
           <h2 id="admin-editor-title">{title}</h2>
           {!product ? <p>새 상품 정보를 입력하세요.</p> : null}
         </div>
-        <button
-          type="button"
-          className="admin-button admin-button-secondary"
-          disabled={busy}
-          onClick={onCancel}
-        >
-          닫기
-        </button>
       </div>
 
       <form

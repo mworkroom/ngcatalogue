@@ -60,32 +60,21 @@ export function AdminDashboard({
 
   return (
     <section className="admin-dashboard" aria-labelledby="admin-dashboard-title">
-      <header className="admin-dashboard-header">
-        <div>
-          <h1 id="admin-dashboard-title">상품 관리</h1>
-          <p>{email || "관리자 계정"}</p>
-        </div>
-        <div className="admin-header-actions">
-          <button
-            type="button"
-            className="admin-button admin-button-primary"
-            disabled={actionBusy}
-            onClick={() => {
-              clearFeedback();
-              setCreating(true);
-              setSelectedProduct(null);
-            }}
-          >
-            새 상품 추가
-          </button>
-          <button
-            type="button"
-            className="admin-button admin-button-secondary"
-            disabled={busy || actionBusy}
-            onClick={onLogout}
-          >
-            로그아웃
-          </button>
+      <header className="topbar admin-topbar">
+        <h1 id="admin-dashboard-title">애터미 가격표</h1>
+        <div className="topbar-actions">
+          <details className="topbar-menu">
+            <summary aria-label="관리자 메뉴">⋮</summary>
+            <div className="topbar-menu-panel">
+              <button
+                type="button"
+                disabled={busy || actionBusy}
+                onClick={onLogout}
+              >
+                로그아웃
+              </button>
+            </div>
+          </details>
         </div>
       </header>
 
@@ -100,18 +89,30 @@ export function AdminDashboard({
       <div className="admin-toolbar">
         <button
           type="button"
-          className="admin-button admin-button-secondary"
-          disabled={loading}
-          onClick={() => void refresh()}
+          className="admin-button admin-button-primary"
+          disabled={actionBusy}
+          onClick={() => {
+            clearFeedback();
+            setCreating(true);
+            setSelectedProduct(null);
+          }}
         >
-          새로고침
+          새 상품 추가
         </button>
         <button
           type="button"
           className="admin-button admin-button-secondary"
           onClick={() => setShowHidden((current) => !current)}
         >
-          숨긴 상품 {showHidden ? "닫기" : "보기"} ({hiddenProducts.length})
+          숨긴 상품 {showHidden ? "닫기" : "보기"}
+        </button>
+        <button
+          type="button"
+          className="admin-button admin-button-secondary"
+          disabled={loading}
+          onClick={() => void refresh()}
+        >
+          새로고침
         </button>
       </div>
 
@@ -143,10 +144,7 @@ export function AdminDashboard({
 
       <section className="admin-section" aria-labelledby="admin-visible-title">
         <div className="admin-section-heading">
-          <div>
-            <h2 id="admin-visible-title">표시 중인 상품</h2>
-            <p>{visibleProducts.length}개</p>
-          </div>
+          <h2 id="admin-visible-title">등록된 상품 {visibleProducts.length}개</h2>
         </div>
         {loading ? (
           <LoadingState message="상품을 불러오는 중..." />
@@ -178,7 +176,6 @@ export function AdminDashboard({
         expanded={showHidden}
         products={hiddenProducts}
         restoreBusy={action === "restoring"}
-        onToggle={() => setShowHidden((current) => !current)}
         onEdit={(product) => {
           clearFeedback();
           setCreating(false);
@@ -209,6 +206,9 @@ export function AdminDashboard({
           }}
         />
       ) : null}
+      <footer className="admin-session-footer">
+        로그인한 아이디: {email || "관리자 계정"}
+      </footer>
     </section>
   );
 }

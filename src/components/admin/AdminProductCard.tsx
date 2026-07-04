@@ -1,8 +1,6 @@
+import { Fragment } from "react";
 import type { AdminProduct } from "../../types/product";
-import {
-  AdminProductBadges,
-  formatAdminNumber
-} from "./AdminProductTable";
+import { formatAdminNumber } from "./AdminProductTable";
 
 interface AdminProductCardProps {
   product: AdminProduct;
@@ -47,16 +45,7 @@ export function AdminProductCard({
     <details className="product-card admin-product-card">
       <summary>
         <span className="summary-name">
-          <span className="product-name-line">
-            <span className="product-name">{product.name_ko}</span>
-            <AdminProductBadges product={product} />
-          </span>
-          <span className="admin-card-subtitle">
-            {product.name_pt || "포르투갈어 상품명 없음"}
-          </span>
-        </span>
-        <span className="summary-price">
-          {formatAdminNumber(product.consumer_price)}
+          <span className="product-name">{product.name_ko}</span>
         </span>
       </summary>
       <div className="card-details">
@@ -65,12 +54,17 @@ export function AdminProductCard({
           <span className="detail-value">{product.name_pt || "-"}</span>
         </div>
         {adminDetailRows.map((row) => (
-          <div className="detail-row" key={row.key}>
-            <span className="detail-label">{row.label}</span>
-            <span className="detail-value">
-              {formatAdminNumber(product[row.key])}
-            </span>
-          </div>
+          <Fragment key={row.key}>
+            <div className="detail-row">
+              <span className="detail-label">{row.label}</span>
+              <span className="detail-value">
+                {formatAdminNumber(product[row.key])}
+              </span>
+            </div>
+            {row.key === "brazil_pv" ? (
+              <div className="admin-detail-divider" aria-hidden="true" />
+            ) : null}
+          </Fragment>
         ))}
         <div className="detail-row">
           <span className="detail-label">세트 상품</span>

@@ -8,7 +8,6 @@ interface AdminHiddenProductsProps {
   restoreBusy: boolean;
   onEdit: (product: AdminProduct) => void;
   onRestore: (product: AdminProduct) => void;
-  onToggle: () => void;
 }
 
 export function AdminHiddenProducts({
@@ -16,9 +15,12 @@ export function AdminHiddenProducts({
   products,
   restoreBusy,
   onEdit,
-  onRestore,
-  onToggle
+  onRestore
 }: AdminHiddenProductsProps) {
+  if (!expanded) {
+    return null;
+  }
+
   return (
     <section className="admin-section" aria-labelledby="admin-hidden-title">
       <div className="admin-section-heading">
@@ -26,33 +28,22 @@ export function AdminHiddenProducts({
           <h2 id="admin-hidden-title">숨긴 상품</h2>
           <p>{products.length}개</p>
         </div>
-        <button
-          type="button"
-          className="admin-button admin-button-secondary"
-          onClick={onToggle}
-        >
-          {expanded ? "숨기기" : "보기"}
-        </button>
       </div>
-      {expanded ? (
-        <>
-          <AdminProductTable
-            emptyMessage="숨긴 상품이 없습니다."
-            products={products}
-            restoreBusy={restoreBusy}
-            showRestore
-            onEdit={onEdit}
-            onRestore={onRestore}
-          />
-          <AdminProductList
-            emptyMessage="숨긴 상품이 없습니다."
-            products={products}
-            restoreBusy={restoreBusy}
-            onEdit={onEdit}
-            onRestore={onRestore}
-          />
-        </>
-      ) : null}
+      <AdminProductTable
+        emptyMessage="숨긴 상품이 없습니다."
+        products={products}
+        restoreBusy={restoreBusy}
+        showRestore
+        onEdit={onEdit}
+        onRestore={onRestore}
+      />
+      <AdminProductList
+        emptyMessage="숨긴 상품이 없습니다."
+        products={products}
+        restoreBusy={restoreBusy}
+        onEdit={onEdit}
+        onRestore={onRestore}
+      />
     </section>
   );
 }

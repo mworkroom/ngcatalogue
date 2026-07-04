@@ -787,7 +787,6 @@ details.product-card summary:active {
 }
 
 .admin-dashboard-header,
-.admin-toolbar,
 .admin-editor,
 .admin-section {
   background: var(--panel);
@@ -802,6 +801,10 @@ details.product-card summary:active {
   justify-content: space-between;
   gap: 14px;
   padding: 16px;
+}
+
+.admin-topbar {
+  margin-bottom: 0;
 }
 
 .admin-header-actions {
@@ -836,11 +839,13 @@ details.product-card summary:active {
 }
 
 .admin-toolbar {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  justify-content: flex-end;
-  padding: 12px 0 14px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .admin-product-form label span {
@@ -906,13 +911,12 @@ details.product-card summary:active {
   margin-bottom: 12px;
 }
 
+.admin-section-heading h2 {
+  width: 100%;
+}
+
 .admin-product-card {
-  display: grid;
-  gap: 10px;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #ffffff;
+  background: var(--panel);
 }
 
 .admin-product-card-main {
@@ -1042,6 +1046,20 @@ details.product-card summary:active {
 
 .admin-memo-row {
   align-items: flex-start;
+}
+
+.admin-detail-divider {
+  height: 1px;
+  margin: 4px 0 0;
+  background: var(--line);
+}
+
+.admin-session-footer {
+  padding: 6px 2px 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .admin-table-actions {
@@ -1179,26 +1197,37 @@ details.product-card summary:active {
     padding: 12px 12px 48px;
   }
 
-  .admin-dashboard-header,
   .admin-section-heading,
   .admin-editor-heading {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .admin-toolbar {
-    display: grid;
-    grid-template-columns: 1fr;
-    padding-top: 0;
+  .admin-topbar {
+    margin-right: -12px;
+    margin-left: -12px;
   }
 
-  .admin-dashboard-header .admin-button,
+  .admin-toolbar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
   .admin-toolbar .admin-button,
   .admin-section-heading .admin-button,
   .admin-editor-heading .admin-button,
   .admin-form-actions .admin-button,
   .admin-dialog-actions .admin-button {
     width: 100%;
+  }
+
+  .admin-toolbar .admin-button {
+    min-height: 44px;
+    padding: 0 6px;
+    font-size: 13px;
+    line-height: 1.2;
+    white-space: normal;
   }
 
   .admin-form-grid,
