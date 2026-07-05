@@ -49,7 +49,7 @@ export function AdminProductTable({
               <td className="name-column">
                 <strong>{product.name_ko}</strong>
               </td>
-              <td>{product.name_pt || "-"}</td>
+              <td className="admin-portuguese-name">{product.name_pt || "-"}</td>
               <td className="number-column">
                 {formatAdminNumber(product.handling_fee)}
               </td>

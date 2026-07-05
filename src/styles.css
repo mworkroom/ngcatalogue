@@ -137,6 +137,23 @@ h1 {
   text-align: left;
 }
 
+.topbar-menu-account {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 8px 10px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.topbar-menu-account strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
 .language-switch {
   display: inline-flex;
   width: auto;
@@ -821,6 +838,10 @@ details.product-card summary:active {
   width: auto;
 }
 
+.admin-toolbar .admin-button {
+  width: 100%;
+}
+
 .admin-dashboard-header h1,
 .admin-section h2,
 .admin-editor h2,
@@ -841,7 +862,7 @@ details.product-card summary:active {
 
 .admin-toolbar {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   padding: 0;
   background: transparent;
@@ -951,8 +972,24 @@ details.product-card summary:active {
   width: 100%;
 }
 
+.admin-section .admin-section-title {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.25;
+}
+
 .admin-product-card {
   background: var(--panel);
+}
+
+.admin-product-card .summary-price {
+  min-width: max-content;
+}
+
+.admin-portuguese-name {
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
 }
 
 .admin-product-card-main {
@@ -1088,14 +1125,6 @@ details.product-card summary:active {
   height: 1px;
   margin: 4px 0 0;
   background: var(--line);
-}
-
-.admin-session-footer {
-  padding: 6px 2px 0;
-  color: var(--muted);
-  font-size: 12px;
-  text-align: center;
-  overflow-wrap: anywhere;
 }
 
 .admin-table-actions {
@@ -1266,7 +1295,7 @@ details.product-card summary:active {
 
   .admin-toolbar {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 7px;
   }
 
@@ -1279,9 +1308,9 @@ details.product-card summary:active {
   }
 
   .admin-toolbar .admin-button {
-    min-height: 44px;
-    padding: 0 6px;
-    font-size: 13px;
+    min-height: 48px;
+    padding: 0 10px;
+    font-size: 14px;
     line-height: 1.2;
     white-space: normal;
   }

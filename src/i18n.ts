@@ -76,7 +76,6 @@ export const dictionary = {
       newProduct: "Novo produto",
       showVisible: "Ver produtos cadastrados",
       showHidden: "Ver produtos ocultos",
-      refresh: "Atualizar",
       loadingProducts: "Carregando produtos...",
       hideDialogTitle: "Ocultar produto",
       hideDialogMessage:
@@ -111,7 +110,8 @@ export const dictionary = {
         weight: "Peso",
         pack_quantity: "Quantidade",
         is_set: "Kit",
-        memo: "Memo"
+        memo: "Memo",
+        updated_at: "Atualizado em"
       },
       numberError: (label: string) => `Verifique o número em ${label}.`,
       integerError: (label: string) => `${label} deve ser um número inteiro.`
@@ -192,7 +192,6 @@ export const dictionary = {
       newProduct: "새 상품 추가",
       showVisible: "등록된 상품 보기",
       showHidden: "숨긴 상품 보기",
-      refresh: "새로고침",
       loadingProducts: "상품을 불러오는 중...",
       hideDialogTitle: "상품 숨기기",
       hideDialogMessage:
@@ -227,7 +226,8 @@ export const dictionary = {
         weight: "무게",
         pack_quantity: "수량",
         is_set: "세트 상품",
-        memo: "메모"
+        memo: "메모",
+        updated_at: "업데이트 날짜"
       },
       numberError: (label: string) => `${label} 숫자를 확인해 주세요.`,
       integerError: (label: string) => `${label}은 정수로 입력해 주세요.`

@@ -133,7 +133,6 @@ export function useAdminProducts() {
     hideProduct,
     loading,
     products: sortedProducts,
-    refresh: loadProducts,
     restoreProduct,
     updateProduct
   };

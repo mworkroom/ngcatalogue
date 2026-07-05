@@ -32,7 +32,6 @@ export function AdminDashboard({
     hideProduct,
     loading,
     products,
-    refresh,
     restoreProduct,
     updateProduct
   } = useAdminProducts();
@@ -75,6 +74,10 @@ export function AdminDashboard({
           <details className="topbar-menu">
             <summary aria-label={adminText.menu}>⋮</summary>
             <div className="topbar-menu-panel">
+              <p className="topbar-menu-account">
+                <span>{adminText.loggedInEmail}</span>
+                <strong>{email || adminText.fallbackAccount}</strong>
+              </p>
               <button
                 type="button"
                 disabled={busy || actionBusy}
@@ -119,14 +122,6 @@ export function AdminDashboard({
         >
           {showHidden ? adminText.showVisible : adminText.showHidden}
         </button>
-        <button
-          type="button"
-          className="admin-button admin-button-secondary"
-          disabled={loading}
-          onClick={() => void refresh()}
-        >
-          {adminText.refresh}
-        </button>
       </div>
 
       {feedback ? (
@@ -152,8 +147,8 @@ export function AdminDashboard({
           }}
           onSubmit={async (input) => {
             if (selectedProduct) {
-              const updatedProduct = await updateProduct(selectedProduct.id, input);
-              setSelectedProduct(updatedProduct);
+              await updateProduct(selectedProduct.id, input);
+              closeEditor();
               return;
             }
 
@@ -165,7 +160,9 @@ export function AdminDashboard({
 
       <section className="admin-section" aria-labelledby="admin-visible-title">
         <div className="admin-section-heading">
-          <h2 id="admin-visible-title">{currentTitle}</h2>
+          <h2 className="admin-section-title" id="admin-visible-title">
+            {currentTitle}
+          </h2>
         </div>
         {loading ? (
           <LoadingState message={adminText.loadingProducts} />
@@ -224,9 +221,6 @@ export function AdminDashboard({
           }}
         />
       ) : null}
-      <footer className="admin-session-footer">
-        {adminText.loggedInEmail}: {email || adminText.fallbackAccount}
-      </footer>
     </section>
   );
 }

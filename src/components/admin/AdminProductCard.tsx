@@ -49,11 +49,16 @@ export function AdminProductCard({
         <span className="summary-name">
           <span className="product-name">{product.name_ko}</span>
         </span>
+        <span className="summary-price">
+          {formatAdminNumber(product.consumer_price)}
+        </span>
       </summary>
       <div className="card-details">
-        <div className="detail-row">
+        <div className="detail-row admin-portuguese-row">
           <span className="detail-label">{adminText.fields.name_pt}</span>
-          <span className="detail-value">{product.name_pt || "-"}</span>
+          <span className="detail-value admin-portuguese-name">
+            {product.name_pt || "-"}
+          </span>
         </div>
         {adminDetailRows.map((row) => (
           <Fragment key={row.key}>
@@ -78,6 +83,12 @@ export function AdminProductCard({
           <span className="detail-label">{adminText.fields.memo}</span>
           <span className="detail-value">{product.memo || "-"}</span>
         </div>
+        <div className="detail-row">
+          <span className="detail-label">{adminText.fields.updated_at}</span>
+          <span className="detail-value">
+            {formatAdminDate(product.updated_at)}
+          </span>
+        </div>
         <div className="admin-product-card-actions">
           <button
             type="button"
@@ -100,4 +111,21 @@ export function AdminProductCard({
       </div>
     </details>
   );
+}
+
+function formatAdminDate(value: string | null | undefined) {
+  if (!value) {
+    return "-";
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("ko-KR", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  }).format(date);
 }

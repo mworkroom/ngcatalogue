@@ -28,7 +28,9 @@ export function AdminHiddenProducts({
     <section className="admin-section" aria-labelledby="admin-hidden-title">
       <div className="admin-section-heading">
         <div>
-          <h2 id="admin-hidden-title">{adminText.hiddenCount(products.length)}</h2>
+          <h2 className="admin-section-title" id="admin-hidden-title">
+            {adminText.hiddenCount(products.length)}
+          </h2>
         </div>
       </div>
       <AdminProductTable
