@@ -38,6 +38,8 @@ export default function App() {
   const restoringPostAuthRoute = usePostAuthRouteRestore();
   const route = useAppRoute();
 
+  useRouteMetadata();
+
   if (restoringPostAuthRoute) {
     return <AuthCallbackLoading />;
   }
@@ -292,6 +294,7 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
       />
       <ShortcutHelpDialog
         language={language}
+        mode={mode}
         open={shortcutHelpOpen}
         onClose={() => setShortcutHelpOpen(false)}
       />
@@ -442,16 +445,24 @@ function ShortcutBanner({
 
 interface ShortcutHelpDialogProps {
   language: Language;
+  mode: CatalogueMode;
   open: boolean;
   onClose: () => void;
 }
 
 function ShortcutHelpDialog({
   language,
+  mode,
   open,
   onClose
 }: ShortcutHelpDialogProps) {
   const t = dictionary[language];
+  const intro =
+    mode === "center"
+      ? language === "pt"
+        ? "Adicione esta tela à Tela de Início para abrir diretamente a tabela do centro."
+        : "센터 화면에서 바로가기를 만들면 센터 가격표로 바로 열립니다."
+      : t.shortcutHelpIntro;
 
   if (!open) {
     return null;
@@ -471,7 +482,7 @@ function ShortcutHelpDialog({
             ×
           </button>
         </div>
-        <p className="shortcut-dialog-intro">{t.shortcutHelpIntro}</p>
+        <p className="shortcut-dialog-intro">{intro}</p>
         <div className="shortcut-steps">
           <div>
             <h3>{t.shortcutAndroidTitle}</h3>
@@ -490,6 +501,15 @@ function ShortcutHelpDialog({
 type AppRoute = CatalogueMode | "admin";
 
 const SHORTCUT_BANNER_KEY = "ngcatalogue-shortcut-banner-dismissed";
+const BUSINESS_MANIFEST_HREF = "/manifest.webmanifest";
+const CENTER_MANIFEST_HREF = "/manifest-center.webmanifest";
+const ADMIN_MANIFEST_HREF = "/manifest-admin.webmanifest";
+const CENTER_APPLE_TITLE = "Preço Centro";
+const ADMIN_APPLE_TITLE = "가격표 관리";
+const businessAppleTitle =
+  document
+    .querySelector<HTMLMetaElement>('meta[name="apple-mobile-web-app-title"]')
+    ?.getAttribute("content") ?? "애터미 가격표";
 
 function readShortcutBannerDismissed() {
   return window.localStorage.getItem(SHORTCUT_BANNER_KEY) === "1";
@@ -533,6 +553,48 @@ function useAppRoute() {
   }, []);
 
   return route;
+}
+
+function useRouteMetadata() {
+  useEffect(() => {
+    updateRouteMetadata();
+
+    window.addEventListener("hashchange", updateRouteMetadata);
+
+    return () => {
+      window.removeEventListener("hashchange", updateRouteMetadata);
+    };
+  }, []);
+}
+
+function updateRouteMetadata() {
+  const manifestLink = document.querySelector<HTMLLinkElement>(
+    'link[rel="manifest"]'
+  );
+  const appleTitle = document.querySelector<HTMLMetaElement>(
+    'meta[name="apple-mobile-web-app-title"]'
+  );
+  const hashRoute = window.location.hash;
+
+  if (manifestLink) {
+    if (hashRoute === "#/catalog/center") {
+      manifestLink.href = CENTER_MANIFEST_HREF;
+    } else if (hashRoute === "#/admin") {
+      manifestLink.href = ADMIN_MANIFEST_HREF;
+    } else {
+      manifestLink.href = BUSINESS_MANIFEST_HREF;
+    }
+  }
+
+  if (appleTitle) {
+    if (hashRoute === "#/catalog/center") {
+      appleTitle.content = CENTER_APPLE_TITLE;
+    } else if (hashRoute === "#/admin") {
+      appleTitle.content = ADMIN_APPLE_TITLE;
+    } else {
+      appleTitle.content = businessAppleTitle;
+    }
+  }
 }
 
 function normalizeRoute(route: string) {

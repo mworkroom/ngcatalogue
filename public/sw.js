@@ -1,9 +1,11 @@
-const CACHE_NAME = "atomy-price-v2";
+const CACHE_NAME = "atomy-price-v3";
 
 const STATIC_FILES = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./manifest-center.webmanifest",
+  "./manifest-admin.webmanifest",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
