@@ -48,6 +48,7 @@ export function AdminProductTable({
             <tr key={product.id}>
               <td className="name-column">
                 <strong>{product.name_ko}</strong>
+                <AdminProductBadges product={product} />
               </td>
               <td className="admin-portuguese-name">{product.name_pt || "-"}</td>
               <td className="number-column">

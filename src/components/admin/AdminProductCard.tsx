@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
+import { QuantityBadge } from "../QuantityBadge";
+import { SetBadge } from "../SetBadge";
 import { formatAdminNumber } from "./AdminProductTable";
 
 interface AdminProductCardProps {
@@ -42,12 +44,22 @@ export function AdminProductCard({
   restoreBusy = false
 }: AdminProductCardProps) {
   const adminText = dictionary.ko.admin;
+  const hasQuantityBadge = Boolean(
+    product.pack_quantity && product.pack_quantity > 1
+  );
+  const hasBadges = product.is_set || hasQuantityBadge;
 
   return (
     <details className="product-card admin-product-card">
       <summary>
         <span className="summary-name">
           <span className="product-name">{product.name_ko}</span>
+          {hasBadges ? (
+            <span className="product-badges">
+              {product.is_set ? <SetBadge language="ko" /> : null}
+              <QuantityBadge quantity={product.pack_quantity} />
+            </span>
+          ) : null}
         </span>
         <span className="summary-price">
           {formatAdminNumber(product.consumer_price)}
@@ -92,7 +104,7 @@ export function AdminProductCard({
         <div className="admin-product-card-actions">
           <button
             type="button"
-            className="admin-button admin-button-secondary"
+            className="admin-button admin-button-primary"
             onClick={() => onEdit(product)}
           >
             {adminText.edit}

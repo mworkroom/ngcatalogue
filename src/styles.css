@@ -974,7 +974,8 @@ details.product-card summary:active {
 
 .admin-section .admin-section-title {
   color: var(--muted);
-  font-size: 17px;
+  font-size: 14px;
+  font-weight: 700;
   line-height: 1.25;
 }
 
@@ -984,6 +985,13 @@ details.product-card summary:active {
 
 .admin-product-card .summary-price {
   min-width: max-content;
+}
+
+.admin-product-card .summary-name {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
 }
 
 .admin-portuguese-name {
@@ -1036,6 +1044,10 @@ details.product-card summary:active {
   gap: 8px;
 }
 
+.admin-product-card-actions .admin-button {
+  width: 100%;
+}
+
 .admin-empty {
   margin: 0;
   padding: 20px 8px;
@@ -1085,6 +1097,10 @@ details.product-card summary:active {
 .admin-product-table td:first-child {
   z-index: 1;
   background: var(--panel);
+}
+
+.admin-product-table td:first-child .product-badges {
+  margin-left: 6px;
 }
 
 .admin-product-table tbody tr:hover td:first-child {
@@ -1181,7 +1197,7 @@ details.product-card summary:active {
 .admin-dialog-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 40;
+  z-index: 60;
   display: grid;
   place-items: end center;
   padding: 18px;
