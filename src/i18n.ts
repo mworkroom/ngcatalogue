@@ -166,15 +166,15 @@ export const dictionary = {
       "휴대폰 화면에 아이콘을 만들어 두면, 다음부터는 그 아이콘만 눌러서 바로 열 수 있어요.",
     shortcutBannerAction: "홈 아이콘 추가하는 방법",
     shortcutDismiss: "이 알림창 다시 보지 않기",
-    shortcutHelpTitle: "휴대폰 홈 화면에 아이콘 만들기",
+    shortcutHelpTitle: "홈 화면에 아이콘 만들기",
     shortcutHelpIntro:
       "카카오톡이나 WhatsApp에서는 아이콘을 만들 수 없습니다. 링크를 복사한 뒤 아래 순서대로 따라 해 주세요.",
     shortcutAndroidTitle: "삼성폰·안드로이드폰",
     shortcutAndroidSteps:
-      "1. Chrome(크롬) 앱을 엽니다.\n2. 주소창에 링크를 붙여넣고 이동합니다.\n3. 가격표 사이트에 접속 후, 주소창 옆의 점 세 개(⋮) 메뉴를 누릅니다.\n4. ‘홈 화면에 추가’를 누릅니다.",
+      "1. Chrome(크롬) 앱 열기.\n2. 주소창에 링크를 붙여넣고 이동.\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋮) 메뉴 누르기.\n4. ‘홈 화면에 추가’ 누르기.\n5. ‘바로가기 만들기’ 또는 ‘설치’를 누른 뒤 ‘추가’ 누르기.",
     shortcutIosTitle: "아이폰",
     shortcutIosSteps: 
-      "1. Safari(사파리) 앱을 엽니다.\n2. 주소창에 링크를 붙여넣고 이동합니다.\n3. 가격표 사이트에 접속 후, 주소창 옆의 점 세 개(⋮) 메뉴를 누릅니다.\n4. ‘홈 화면에 추가’를 누릅니다.",
+      "1. Safari(사파리) 앱 열기.\n2. 주소창에 링크를 붙여넣고 이동.\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋯) 메뉴 누르기.\n4. ‘공유’ 누르기.\n5. ‘홈 화면에 추가’ 누르기.",
     columns: {
       productName: "상품명",
       handling_fee: "원가",
