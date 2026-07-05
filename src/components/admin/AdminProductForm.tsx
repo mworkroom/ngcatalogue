@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { dictionary } from "../../i18n";
 import type { AdminProduct, AdminProductInput } from "../../types/product";
 
 interface AdminProductFormProps {
@@ -40,18 +41,17 @@ const numericFieldLabels: Array<{
     | "weight"
     | "pack_quantity"
   >;
-  label: string;
   step: string;
 }> = [
-  { key: "handling_fee", label: "취급 수수료", step: "0.01" },
-  { key: "business_price", label: "사업자 가격", step: "0.01" },
-  { key: "consumer_price", label: "소비자 가격", step: "0.01" },
-  { key: "brazil_price", label: "브라질 사이트 가격", step: "0.01" },
-  { key: "brazil_pv", label: "브라질 PV", step: "0.01" },
-  { key: "korea_price", label: "한국 가격", step: "0.01" },
-  { key: "korea_pv", label: "한국 PV", step: "0.01" },
-  { key: "weight", label: "무게", step: "0.01" },
-  { key: "pack_quantity", label: "수량", step: "1" }
+  { key: "handling_fee", step: "0.01" },
+  { key: "business_price", step: "0.01" },
+  { key: "consumer_price", step: "0.01" },
+  { key: "brazil_price", step: "0.01" },
+  { key: "brazil_pv", step: "0.01" },
+  { key: "korea_price", step: "0.01" },
+  { key: "korea_pv", step: "0.01" },
+  { key: "weight", step: "0.01" },
+  { key: "pack_quantity", step: "1" }
 ];
 
 export function AdminProductForm({
@@ -62,6 +62,7 @@ export function AdminProductForm({
   onRestore,
   onSubmit
 }: AdminProductFormProps) {
+  const adminText = dictionary.ko.admin;
   const [state, setState] = useState<ProductFormState>(() =>
     getInitialState(product)
   );
@@ -72,162 +73,199 @@ export function AdminProductForm({
     setValidationError("");
   }, [product]);
 
-  const title = product ? "상품 수정" : "새 상품 추가";
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !busy) {
+        onCancel();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [busy, onCancel]);
+
+  const title = product ? adminText.editProduct : adminText.newProduct;
 
   return (
-    <section className="admin-editor" aria-labelledby="admin-editor-title">
-      <div className="admin-editor-heading">
-        <div>
-          <h2 id="admin-editor-title">{title}</h2>
-          {!product ? <p>새 상품 정보를 입력하세요.</p> : null}
-        </div>
-      </div>
-
-      <form
-        className="admin-product-form"
-        onSubmit={(event) => {
-          event.preventDefault();
-          setValidationError("");
-
-          try {
-            const input = toProductInput(state);
-            void onSubmit(input).catch(() => {
-              // Parent state keeps the form open and shows the readable error.
-            });
-          } catch (error) {
-            setValidationError(
-              error instanceof Error ? error.message : "입력값을 확인해 주세요."
-            );
-          }
-        }}
+    <div
+      className="admin-editor-backdrop"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget && !busy) {
+          onCancel();
+        }
+      }}
+    >
+      <section
+        className="admin-editor"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="admin-editor-title"
+        onMouseDown={(event) => event.stopPropagation()}
       >
-        <label>
-          <span>한국어 상품명 *</span>
-          <input
-            value={state.name_ko}
-            type="text"
-            autoComplete="off"
-            required
-            onChange={(event) =>
-              setState((current) => ({
-                ...current,
-                name_ko: event.target.value
-              }))
-            }
-          />
-        </label>
-
-        <label>
-          <span>포르투갈어 상품명</span>
-          <input
-            value={state.name_pt}
-            type="text"
-            autoComplete="off"
-            onChange={(event) =>
-              setState((current) => ({
-                ...current,
-                name_pt: event.target.value
-              }))
-            }
-          />
-        </label>
-
-        <div className="admin-form-grid">
-          {numericFieldLabels.map((field) => (
-            <label key={field.key}>
-              <span>{field.label}</span>
-              <input
-                value={state[field.key]}
-                type="number"
-                inputMode="decimal"
-                min={field.key === "pack_quantity" ? "1" : undefined}
-                step={field.step}
-                onChange={(event) =>
-                  setState((current) => ({
-                    ...current,
-                    [field.key]: event.target.value
-                  }))
-                }
-              />
-            </label>
-          ))}
-        </div>
-
-        <div className="admin-switch-row">
-          <label>
-            <input
-              checked={state.is_set}
-              type="checkbox"
-              onChange={(event) =>
-                setState((current) => ({
-                  ...current,
-                  is_set: event.target.checked
-                }))
-              }
-            />
-            <span>세트 상품</span>
-          </label>
-        </div>
-
-        <label>
-          <span>메모</span>
-          <textarea
-            value={state.memo}
-            rows={4}
-            onChange={(event) =>
-              setState((current) => ({
-                ...current,
-                memo: event.target.value
-              }))
-            }
-          />
-        </label>
-
-        {validationError ? (
-          <p className="access-message" role="alert">
-            {validationError}
-          </p>
-        ) : null}
-
-        <div className="admin-form-actions">
-          <button
-            type="submit"
-            className="admin-button admin-button-primary"
-            disabled={busy}
-          >
-            {busy ? "저장 중..." : "저장"}
-          </button>
+        <div className="admin-editor-heading">
+          <div>
+            <h2 id="admin-editor-title">{title}</h2>
+            {!product ? <p>{adminText.newProductDescription}</p> : null}
+          </div>
           <button
             type="button"
-            className="admin-button admin-button-secondary"
+            className="admin-editor-close"
+            aria-label={dictionary.ko.close}
             disabled={busy}
             onClick={onCancel}
           >
-            취소
+            ×
           </button>
-          {product?.is_visible && onHide ? (
-            <button
-              type="button"
-              className="admin-button admin-button-danger"
-              disabled={busy}
-              onClick={() => onHide(product)}
-            >
-              상품 숨기기
-            </button>
+        </div>
+
+        <form
+          className="admin-product-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setValidationError("");
+
+            try {
+              const input = toProductInput(state);
+              void onSubmit(input).catch(() => {
+                // Parent state keeps the form open and shows the readable error.
+              });
+            } catch (error) {
+              setValidationError(
+                error instanceof Error ? error.message : adminText.validationFallback
+              );
+            }
+          }}
+        >
+          <label>
+            <span>{adminText.fields.name_ko} *</span>
+            <input
+              value={state.name_ko}
+              type="text"
+              autoComplete="off"
+              required
+              autoFocus
+              onChange={(event) =>
+                setState((current) => ({
+                  ...current,
+                  name_ko: event.target.value
+                }))
+              }
+            />
+          </label>
+
+          <label>
+            <span>{adminText.fields.name_pt}</span>
+            <input
+              value={state.name_pt}
+              type="text"
+              autoComplete="off"
+              onChange={(event) =>
+                setState((current) => ({
+                  ...current,
+                  name_pt: event.target.value
+                }))
+              }
+            />
+          </label>
+
+          <div className="admin-form-grid">
+            {numericFieldLabels.map((field) => (
+              <label key={field.key}>
+                <span>{adminText.fields[field.key]}</span>
+                <input
+                  value={state[field.key]}
+                  type="number"
+                  inputMode="decimal"
+                  min={field.key === "pack_quantity" ? "1" : undefined}
+                  step={field.step}
+                  onChange={(event) =>
+                    setState((current) => ({
+                      ...current,
+                      [field.key]: event.target.value
+                    }))
+                  }
+                />
+              </label>
+            ))}
+          </div>
+
+          <div className="admin-switch-row">
+            <label>
+              <input
+                checked={state.is_set}
+                type="checkbox"
+                onChange={(event) =>
+                  setState((current) => ({
+                    ...current,
+                    is_set: event.target.checked
+                  }))
+                }
+              />
+              <span>{adminText.fields.is_set}</span>
+            </label>
+          </div>
+
+          <label>
+            <span>{adminText.fields.memo}</span>
+            <textarea
+              value={state.memo}
+              rows={4}
+              onChange={(event) =>
+                setState((current) => ({
+                  ...current,
+                  memo: event.target.value
+                }))
+              }
+            />
+          </label>
+
+          {validationError ? (
+            <p className="access-message" role="alert">
+              {validationError}
+            </p>
           ) : null}
-          {product && !product.is_visible && onRestore ? (
+
+          <div className="admin-form-actions">
             <button
-              type="button"
+              type="submit"
               className="admin-button admin-button-primary"
               disabled={busy}
-              onClick={() => onRestore(product)}
             >
-              다시 보이게 하기
+              {busy ? adminText.saving : adminText.save}
             </button>
-          ) : null}
-        </div>
-      </form>
-    </section>
+            <button
+              type="button"
+              className="admin-button admin-button-secondary"
+              disabled={busy}
+              onClick={onCancel}
+            >
+              {adminText.cancel}
+            </button>
+            {product?.is_visible && onHide ? (
+              <button
+                type="button"
+                className="admin-button admin-button-danger"
+                disabled={busy}
+                onClick={() => onHide(product)}
+              >
+                {adminText.hide}
+              </button>
+            ) : null}
+            {product && !product.is_visible && onRestore ? (
+              <button
+                type="button"
+                className="admin-button admin-button-primary"
+                disabled={busy}
+                onClick={() => onRestore(product)}
+              >
+                {adminText.showAgain}
+              </button>
+            ) : null}
+          </div>
+        </form>
+      </section>
+    </div>
   );
 }
 
@@ -251,24 +289,46 @@ function getInitialState(product: AdminProduct | null): ProductFormState {
 }
 
 function toProductInput(state: ProductFormState): AdminProductInput {
+  const adminText = dictionary.ko.admin;
   const nameKo = state.name_ko.trim();
 
   if (!nameKo) {
-    throw new Error("한국어 상품명을 입력해 주세요.");
+    throw new Error(adminText.requiredName);
   }
 
   return {
     name_ko: nameKo,
     name_pt: state.name_pt.trim(),
-    handling_fee: parseNullableNumber(state.handling_fee, "취급 수수료"),
-    business_price: parseNullableNumber(state.business_price, "사업자 가격"),
-    consumer_price: parseNullableNumber(state.consumer_price, "소비자 가격"),
-    brazil_price: parseNullableNumber(state.brazil_price, "브라질 사이트 가격"),
-    brazil_pv: parseNullableNumber(state.brazil_pv, "브라질 PV"),
-    korea_price: parseNullableNumber(state.korea_price, "한국 가격"),
-    korea_pv: parseNullableNumber(state.korea_pv, "한국 PV"),
-    weight: parseNullableNumber(state.weight, "무게"),
-    pack_quantity: parseNullableInteger(state.pack_quantity, "수량"),
+    handling_fee: parseNullableNumber(
+      state.handling_fee,
+      adminText.fields.handling_fee
+    ),
+    business_price: parseNullableNumber(
+      state.business_price,
+      adminText.fields.business_price
+    ),
+    consumer_price: parseNullableNumber(
+      state.consumer_price,
+      adminText.fields.consumer_price
+    ),
+    brazil_price: parseNullableNumber(
+      state.brazil_price,
+      adminText.fields.brazil_price
+    ),
+    brazil_pv: parseNullableNumber(
+      state.brazil_pv,
+      adminText.fields.brazil_pv
+    ),
+    korea_price: parseNullableNumber(
+      state.korea_price,
+      adminText.fields.korea_price
+    ),
+    korea_pv: parseNullableNumber(state.korea_pv, adminText.fields.korea_pv),
+    weight: parseNullableNumber(state.weight, adminText.fields.weight),
+    pack_quantity: parseNullableInteger(
+      state.pack_quantity,
+      adminText.fields.pack_quantity
+    ),
     is_set: state.is_set,
     is_visible: state.is_visible,
     memo: state.memo.trim() || null
@@ -280,6 +340,7 @@ function toInputValue(value: number | null | undefined) {
 }
 
 function parseNullableNumber(value: string, label: string) {
+  const adminText = dictionary.ko.admin;
   const trimmed = value.trim();
 
   if (!trimmed) {
@@ -289,13 +350,14 @@ function parseNullableNumber(value: string, label: string) {
   const number = Number(trimmed);
 
   if (!Number.isFinite(number)) {
-    throw new Error(`${label} 숫자를 확인해 주세요.`);
+    throw new Error(adminText.numberError(label));
   }
 
   return number;
 }
 
 function parseNullableInteger(value: string, label: string) {
+  const adminText = dictionary.ko.admin;
   const number = parseNullableNumber(value, label);
 
   if (number === null) {
@@ -303,7 +365,7 @@ function parseNullableInteger(value: string, label: string) {
   }
 
   if (!Number.isInteger(number)) {
-    throw new Error(`${label}은 정수로 입력해 주세요.`);
+    throw new Error(adminText.integerError(label));
   }
 
   return number;

@@ -1,3 +1,4 @@
+import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
 import { QuantityBadge } from "../QuantityBadge";
 import { SetBadge } from "../SetBadge";
@@ -19,25 +20,27 @@ export function AdminProductTable({
   onEdit,
   onRestore
 }: AdminProductTableProps) {
+  const adminText = dictionary.ko.admin;
+
   return (
     <section className="table-card center-table-card admin-product-table-card">
       <table className="center-table admin-product-table">
         <thead>
           <tr>
-            <th className="name-column">한국어 상품명</th>
-            <th>포르투갈어 상품명</th>
-            <th className="number-column">취급 수수료</th>
-            <th className="number-column">사업자 가격</th>
-            <th className="number-column">소비자 가격</th>
-            <th className="number-column">브라질 사이트 가격</th>
-            <th className="number-column">브라질 PV</th>
-            <th className="number-column">한국 가격</th>
-            <th className="number-column">한국 PV</th>
-            <th className="number-column">무게</th>
-            <th className="number-column">수량</th>
-            <th>세트 상품</th>
-            <th>메모</th>
-            <th>관리</th>
+            <th className="name-column">{adminText.fields.name_ko}</th>
+            <th>{adminText.fields.name_pt}</th>
+            <th className="number-column">{adminText.fields.handling_fee}</th>
+            <th className="number-column">{adminText.fields.business_price}</th>
+            <th className="number-column">{adminText.fields.consumer_price}</th>
+            <th className="number-column">{adminText.fields.brazil_price}</th>
+            <th className="number-column">{adminText.fields.brazil_pv}</th>
+            <th className="number-column">{adminText.fields.korea_price}</th>
+            <th className="number-column">{adminText.fields.korea_pv}</th>
+            <th className="number-column">{adminText.fields.weight}</th>
+            <th className="number-column">{adminText.fields.pack_quantity}</th>
+            <th>{adminText.fields.is_set}</th>
+            <th>{adminText.fields.memo}</th>
+            <th>{adminText.manage}</th>
           </tr>
         </thead>
         <tbody>
@@ -85,7 +88,7 @@ export function AdminProductTable({
                     className="admin-button admin-button-secondary"
                     onClick={() => onEdit(product)}
                   >
-                    수정
+                    {adminText.edit}
                   </button>
                   {showRestore && onRestore ? (
                     <button
@@ -94,7 +97,7 @@ export function AdminProductTable({
                       disabled={restoreBusy}
                       onClick={() => onRestore(product)}
                     >
-                      {restoreBusy ? "복구 중..." : "복구"}
+                      {restoreBusy ? adminText.restoring : adminText.restore}
                     </button>
                   ) : null}
                 </div>

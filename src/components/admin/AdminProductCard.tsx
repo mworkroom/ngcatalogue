@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
 import { formatAdminNumber } from "./AdminProductTable";
 
@@ -22,17 +23,16 @@ const adminDetailRows: Array<{
     | "weight"
     | "pack_quantity"
   >;
-  label: string;
 }> = [
-  { key: "handling_fee", label: "취급 수수료" },
-  { key: "business_price", label: "사업자 가격" },
-  { key: "consumer_price", label: "소비자 가격" },
-  { key: "brazil_price", label: "브라질 사이트 가격" },
-  { key: "brazil_pv", label: "브라질 PV" },
-  { key: "korea_price", label: "한국 가격" },
-  { key: "korea_pv", label: "한국 PV" },
-  { key: "weight", label: "무게" },
-  { key: "pack_quantity", label: "수량" }
+  { key: "handling_fee" },
+  { key: "business_price" },
+  { key: "consumer_price" },
+  { key: "brazil_price" },
+  { key: "brazil_pv" },
+  { key: "korea_price" },
+  { key: "korea_pv" },
+  { key: "weight" },
+  { key: "pack_quantity" }
 ];
 
 export function AdminProductCard({
@@ -41,6 +41,8 @@ export function AdminProductCard({
   onRestore,
   restoreBusy = false
 }: AdminProductCardProps) {
+  const adminText = dictionary.ko.admin;
+
   return (
     <details className="product-card admin-product-card">
       <summary>
@@ -50,13 +52,13 @@ export function AdminProductCard({
       </summary>
       <div className="card-details">
         <div className="detail-row">
-          <span className="detail-label">포르투갈어 상품명</span>
+          <span className="detail-label">{adminText.fields.name_pt}</span>
           <span className="detail-value">{product.name_pt || "-"}</span>
         </div>
         {adminDetailRows.map((row) => (
           <Fragment key={row.key}>
             <div className="detail-row">
-              <span className="detail-label">{row.label}</span>
+              <span className="detail-label">{adminText.fields[row.key]}</span>
               <span className="detail-value">
                 {formatAdminNumber(product[row.key])}
               </span>
@@ -67,11 +69,13 @@ export function AdminProductCard({
           </Fragment>
         ))}
         <div className="detail-row">
-          <span className="detail-label">세트 상품</span>
-          <span className="detail-value">{product.is_set ? "예" : "아니오"}</span>
+          <span className="detail-label">{adminText.fields.is_set}</span>
+          <span className="detail-value">
+            {product.is_set ? adminText.yes : adminText.no}
+          </span>
         </div>
         <div className="detail-row admin-memo-row">
-          <span className="detail-label">메모</span>
+          <span className="detail-label">{adminText.fields.memo}</span>
           <span className="detail-value">{product.memo || "-"}</span>
         </div>
         <div className="admin-product-card-actions">
@@ -80,7 +84,7 @@ export function AdminProductCard({
             className="admin-button admin-button-secondary"
             onClick={() => onEdit(product)}
           >
-            수정
+            {adminText.edit}
           </button>
           {onRestore ? (
             <button
@@ -89,7 +93,7 @@ export function AdminProductCard({
               disabled={restoreBusy}
               onClick={() => onRestore(product)}
             >
-              {restoreBusy ? "복구 중..." : "복구"}
+              {restoreBusy ? adminText.restoring : adminText.restore}
             </button>
           ) : null}
         </div>

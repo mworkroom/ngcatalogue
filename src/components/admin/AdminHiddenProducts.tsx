@@ -1,3 +1,4 @@
+import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
 import { AdminProductList } from "./AdminProductList";
 import { AdminProductTable } from "./AdminProductTable";
@@ -17,6 +18,8 @@ export function AdminHiddenProducts({
   onEdit,
   onRestore
 }: AdminHiddenProductsProps) {
+  const adminText = dictionary.ko.admin;
+
   if (!expanded) {
     return null;
   }
@@ -25,12 +28,11 @@ export function AdminHiddenProducts({
     <section className="admin-section" aria-labelledby="admin-hidden-title">
       <div className="admin-section-heading">
         <div>
-          <h2 id="admin-hidden-title">숨긴 상품</h2>
-          <p>{products.length}개</p>
+          <h2 id="admin-hidden-title">{adminText.hiddenCount(products.length)}</h2>
         </div>
       </div>
       <AdminProductTable
-        emptyMessage="숨긴 상품이 없습니다."
+        emptyMessage={adminText.emptyHidden}
         products={products}
         restoreBusy={restoreBusy}
         showRestore
@@ -38,7 +40,7 @@ export function AdminHiddenProducts({
         onRestore={onRestore}
       />
       <AdminProductList
-        emptyMessage="숨긴 상품이 없습니다."
+        emptyMessage={adminText.emptyHidden}
         products={products}
         restoreBusy={restoreBusy}
         onEdit={onEdit}

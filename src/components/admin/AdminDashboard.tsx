@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useAdminProducts } from "../../hooks/useAdminProducts";
+import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
 import { ErrorState } from "../ErrorState";
 import { LoadingState } from "../LoadingState";
@@ -20,6 +21,8 @@ export function AdminDashboard({
   email,
   onLogout
 }: AdminDashboardProps) {
+  const t = dictionary.ko;
+  const adminText = t.admin;
   const {
     action,
     clearFeedback,
@@ -53,11 +56,11 @@ export function AdminDashboard({
   const editorOpen = creating || selectedProduct !== null;
   const currentProducts = showHidden ? hiddenProducts : visibleProducts;
   const currentTitle = showHidden
-    ? `숨긴 상품 ${hiddenProducts.length}개`
-    : `등록된 상품 ${visibleProducts.length}개`;
+    ? adminText.hiddenCount(hiddenProducts.length)
+    : adminText.visibleCount(visibleProducts.length);
   const currentEmptyMessage = showHidden
-    ? "숨긴 상품이 없습니다."
-    : "표시 중인 상품이 없습니다.";
+    ? adminText.emptyHidden
+    : adminText.emptyVisible;
 
   const closeEditor = () => {
     setCreating(false);
@@ -67,17 +70,17 @@ export function AdminDashboard({
   return (
     <section className="admin-dashboard" aria-labelledby="admin-dashboard-title">
       <header className="topbar admin-topbar">
-        <h1 id="admin-dashboard-title">애터미 가격표</h1>
+        <h1 id="admin-dashboard-title">{t.title}</h1>
         <div className="topbar-actions">
           <details className="topbar-menu">
-            <summary aria-label="관리자 메뉴">⋮</summary>
+            <summary aria-label={adminText.menu}>⋮</summary>
             <div className="topbar-menu-panel">
               <button
                 type="button"
                 disabled={busy || actionBusy}
                 onClick={onLogout}
               >
-                로그아웃
+                {adminText.logout}
               </button>
             </div>
           </details>
@@ -86,8 +89,8 @@ export function AdminDashboard({
 
       <SearchBar
         value={query}
-        label="한국어 또는 포르투갈어 상품명"
-        printLabel="PDF 출력"
+        label={adminText.searchLabel}
+        printLabel={t.print}
         onChange={setQuery}
         onPrint={() => window.print()}
       />
@@ -103,7 +106,7 @@ export function AdminDashboard({
             setCreating((current) => !current);
           }}
         >
-          새 상품 추가
+          {adminText.newProduct}
         </button>
         <button
           type="button"
@@ -114,7 +117,7 @@ export function AdminDashboard({
             setShowHidden((current) => !current);
           }}
         >
-          {showHidden ? "등록된 상품 보기" : "숨긴 상품 보기"}
+          {showHidden ? adminText.showVisible : adminText.showHidden}
         </button>
         <button
           type="button"
@@ -122,7 +125,7 @@ export function AdminDashboard({
           disabled={loading}
           onClick={() => void refresh()}
         >
-          새로고침
+          {adminText.refresh}
         </button>
       </div>
 
@@ -165,7 +168,7 @@ export function AdminDashboard({
           <h2 id="admin-visible-title">{currentTitle}</h2>
         </div>
         {loading ? (
-          <LoadingState message="상품을 불러오는 중..." />
+          <LoadingState message={adminText.loadingProducts} />
         ) : (
           <>
             <AdminProductTable
@@ -206,10 +209,10 @@ export function AdminDashboard({
       {hideTarget ? (
         <AdminConfirmDialog
           busy={action === "hiding"}
-          title="상품 숨기기"
-          message="이 상품을 가격표에서 숨길까요? 데이터는 삭제되지 않으며 나중에 복구할 수 있습니다."
-          confirmLabel="숨기기"
-          cancelLabel="취소"
+          title={adminText.hideDialogTitle}
+          message={adminText.hideDialogMessage}
+          confirmLabel={adminText.hide}
+          cancelLabel={adminText.cancel}
           onCancel={() => setHideTarget(null)}
           onConfirm={() => {
             void hideProduct(hideTarget.id).then(() => {
@@ -222,7 +225,7 @@ export function AdminDashboard({
         />
       ) : null}
       <footer className="admin-session-footer">
-        로그인한 아이디: {email || "관리자 계정"}
+        {adminText.loggedInEmail}: {email || adminText.fallbackAccount}
       </footer>
     </section>
   );
