@@ -460,8 +460,8 @@ function ShortcutHelpDialog({
   const intro =
     mode === "center"
       ? language === "pt"
-        ? "Adicione esta tela à Tela de Início para abrir diretamente a tabela do centro."
-        : "센터 화면에서 바로가기를 만들면 센터 가격표로 바로 열립니다."
+        ? "Não é possível criar o ícone dentro do KakaoTalk ou WhatsApp. Copie o link e siga os passos abaixo."
+        : "카카오톡이나 WhatsApp에서는 아이콘을 만들 수 없습니다. 링크를 복사한 뒤 아래 순서대로 따라 해 주세요."
       : t.shortcutHelpIntro;
 
   if (!open) {
