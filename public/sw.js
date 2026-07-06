@@ -1,8 +1,10 @@
-const CACHE_NAME = "atomy-price-v3";
+const CACHE_NAME = "atomy-price-v4";
 
 const STATIC_FILES = [
   "./",
   "./index.html",
+  "./center/",
+  "./admin/",
   "./manifest.webmanifest",
   "./manifest-center.webmanifest",
   "./manifest-admin.webmanifest",

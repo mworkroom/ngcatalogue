@@ -1,11 +1,12 @@
 {
+  "id": "/center/",
   "name": "Atomy Preço Centro",
   "short_name": "Preço Centro",
-  "start_url": "/#/catalog/center",
-  "scope": "/",
+  "start_url": "/center/",
+  "scope": "/center/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "theme_color": "#00B5EF",
   "icons": [
     {
       "src": "/icons/icon-192.png",
