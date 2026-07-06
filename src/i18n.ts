@@ -55,7 +55,7 @@ export const dictionary = {
       "Não é possível criar o ícone dentro do KakaoTalk ou WhatsApp. Copie o link e siga os passos abaixo.",
     shortcutAndroidTitle: "Samsung e Android",
     shortcutAndroidSteps:
-      "1. Abrir o app Chrome\n2. Colar o link na barra de endereços e acessar\n3. Quando a tabela de preços abrir, tocar no menu de três pontos (⋮) ao lado da barra de endereços\n4. Tocar em “Adicionar à tela inicial”\n5. Tocar em “Criar atalho” ou “Instalar” e depois em “Adicionar”",
+      "1. Abrir o app Chrome\n2. Colar o link na barra de endereços e acessar\n3. Quando o site abrir, tocar no menu de três pontos (⋮) ao lado da barra de endereços\n4. Tocar em “Adicionar à tela inicial”\n5. Tocar em “Criar atalho” ou “Instalar” e depois em “Adicionar”",
     shortcutIosTitle: "iPhone",
     shortcutIosSteps:
       "1. Abrir o app Safari\n2. Colar o link na barra de endereços e acessar\n3. Quando a tabela de preços abrir, tocar no menu de três pontos (⋯) ao lado da barra de endereços\n4. Tocar em “Compartilhar”\n5. Tocar em “Adicionar à Tela de Início”",
@@ -173,10 +173,10 @@ export const dictionary = {
       "카카오톡이나 WhatsApp에서는 아이콘을 만들 수 없습니다. 링크를 복사한 뒤 아래 순서대로 따라 해 주세요.",
     shortcutAndroidTitle: "삼성폰·안드로이드폰",
     shortcutAndroidSteps:
-      "1. Chrome(크롬) 앱 열기\n2. 주소창에 링크를 붙여넣고 이동\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋮) 메뉴 누르기\n4. ‘홈 화면에 추가’ 누르기\n5. ‘바로가기 만들기’ 또는 ‘설치’를 누른 뒤 ‘추가’ 누르기",
+      "1. Chrome(크롬) 앱 열기\n2. 주소창에 링크를 붙여넣고 이동\n3. 사이트가 열리면 주소창 옆의 점 세 개(⋮) 메뉴 누르기\n4. ‘홈 화면에 추가’ 누르기\n5. ‘바로가기 만들기’ 또는 ‘설치’를 누른 뒤 ‘추가’ 누르기",
     shortcutIosTitle: "아이폰",
     shortcutIosSteps: 
-      "1. Safari(사파리) 앱 열기\n2. 주소창에 링크를 붙여넣고 이동\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋯) 메뉴 누르기\n4. ‘공유’ 누르기\n5. ‘홈 화면에 추가’ 누르기",
+      "1. Safari(사파리) 앱 열기\n2. 주소창에 링크를 붙여넣고 이동\n3. 사이트가 열리면 주소창 옆의 점 세 개(⋯) 메뉴 누르기\n4. ‘공유’ 누르기\n5. ‘홈 화면에 추가’ 누르기",
     columns: {
       productName: "상품명",
       handling_fee: "원가",
@@ -188,7 +188,7 @@ export const dictionary = {
     admin: {
       menu: "관리자 메뉴",
       logout: "로그아웃",
-      searchLabel: "한국어 또는 포르투갈어 상품명",
+      searchLabel: "상품명 검색",
       visibleCount: (count: number) => `등록된 상품 ${count}개`,
       hiddenCount: (count: number) => `숨긴 상품 ${count}개`,
       emptyVisible: "표시 중인 상품이 없습니다.",
@@ -231,7 +231,7 @@ export const dictionary = {
         pack_quantity: "수량",
         is_set: "세트 상품",
         memo: "메모",
-        updated_at: "마지막 업데이트"
+        updated_at: "최신 업데이트"
       },
       numberError: (label: string) => `${label} 숫자를 확인해 주세요.`,
       integerError: (label: string) => `${label}은 정수로 입력해 주세요.`

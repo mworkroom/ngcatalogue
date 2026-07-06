@@ -461,7 +461,7 @@ function ShortcutHelpDialog({
     mode === "center"
       ? language === "pt"
         ? "Não é possível criar o ícone dentro do KakaoTalk ou WhatsApp. Copie o link e siga os passos abaixo."
-        : "카카오톡이나 WhatsApp에서는 아이콘을 만들 수 없습니다. 링크를 복사한 뒤 아래 순서대로 따라 해 주세요."
+        : "카카오톡이나 WhatsApp에서는 아이콘을 만들 수 없습니다. 링크를 복사한 뒤 다음 순서대로 따라 해 주세요."
       : t.shortcutHelpIntro;
 
   if (!open) {
