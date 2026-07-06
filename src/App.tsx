@@ -486,11 +486,15 @@ function ShortcutHelpDialog({
         <div className="shortcut-steps">
           <div>
             <h3>{t.shortcutAndroidTitle}</h3>
-            <p>{t.shortcutAndroidSteps}</p>
+            <p className="whitespace-pre-line">
+              {t.shortcutAndroidSteps}
+            </p>
           </div>
           <div>
             <h3>{t.shortcutIosTitle}</h3>
-            <p>{t.shortcutIosSteps}</p>
+            <p className="whitespace-pre-line">
+            {t.shortcutIosSteps}
+            </p>
           </div>
         </div>
       </section>
@@ -532,7 +536,11 @@ function getAppRoute(): AppRoute {
     return "admin";
   }
 
-  return pathname.endsWith("/catalog/center") ? "center" : "business";
+  if (pathname.endsWith("/center") || pathname.endsWith("/catalog/center")) {
+    return "center";
+  }
+
+  return "business";
 }
 
 function useAppRoute() {
@@ -574,12 +582,12 @@ function updateRouteMetadata() {
   const appleTitle = document.querySelector<HTMLMetaElement>(
     'meta[name="apple-mobile-web-app-title"]'
   );
-  const hashRoute = window.location.hash;
+  const route = getAppRoute();
 
   if (manifestLink) {
-    if (hashRoute === "#/catalog/center") {
+    if (route === "center") {
       manifestLink.href = CENTER_MANIFEST_HREF;
-    } else if (hashRoute === "#/admin") {
+    } else if (route === "admin") {
       manifestLink.href = ADMIN_MANIFEST_HREF;
     } else {
       manifestLink.href = BUSINESS_MANIFEST_HREF;
@@ -587,9 +595,9 @@ function updateRouteMetadata() {
   }
 
   if (appleTitle) {
-    if (hashRoute === "#/catalog/center") {
+    if (route === "center") {
       appleTitle.content = CENTER_APPLE_TITLE;
-    } else if (hashRoute === "#/admin") {
+    } else if (route === "admin") {
       appleTitle.content = ADMIN_APPLE_TITLE;
     } else {
       appleTitle.content = businessAppleTitle;

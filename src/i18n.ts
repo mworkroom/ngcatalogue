@@ -44,19 +44,21 @@ export const dictionary = {
     centerNetworkError: "Não foi possível conectar ao acesso do centro.",
     centerServerError: "O acesso do centro não está disponível agora.",
     installFreeNote:
-      "Este serviço não ocupa espaço no celular. Depois de entrar, crie um atalho na tela inicial para abrir como app.",
+      "Este serviço não é um aplicativo instalado e não ocupa espaço no celular. Depois de entrar, crie um ícone na tela inicial para abrir diretamente por ele nas próximas vezes.",
     shortcutBannerTitle: "Usa com frequência?",
     shortcutBannerBody:
-      "Crie um atalho na primeira tela do celular para abrir direto, como um app.",
-    shortcutBannerAction: "Como criar atalho",
+      "Crie um ícone na tela do celular para abrir diretamente por ele nas próximas vezes.",
+    shortcutBannerAction: "Como criar o ícone",
     shortcutDismiss: "Não mostrar novamente",
-    shortcutHelpTitle: "Criar atalho na primeira tela do celular",
+    shortcutHelpTitle: "Criar ícone na tela inicial",
     shortcutHelpIntro:
-      "Não precisa instalar pela loja. Use o menu do navegador para criar o atalho.",
-    shortcutAndroidTitle: "Android Chrome",
-    shortcutAndroidSteps: "Toque em ⋮ no canto superior direito > Adicionar a tela inicial.",
-    shortcutIosTitle: "iPhone Safari",
-    shortcutIosSteps: "Toque no botão Compartilhar > Adicionar à Tela de Início.",
+      "Não é possível criar o ícone dentro do KakaoTalk ou WhatsApp. Copie o link e siga os passos abaixo.",
+    shortcutAndroidTitle: "Samsung e Android",
+    shortcutAndroidSteps:
+      "1. Abrir o app Chrome\n2. Colar o link na barra de endereços e acessar\n3. Quando a tabela de preços abrir, tocar no menu de três pontos (⋮) ao lado da barra de endereços\n4. Tocar em “Adicionar à tela inicial”\n5. Tocar em “Criar atalho” ou “Instalar” e depois em “Adicionar”",
+    shortcutIosTitle: "iPhone",
+    shortcutIosSteps:
+      "1. Abrir o app Safari\n2. Colar o link na barra de endereços e acessar\n3. Quando a tabela de preços abrir, tocar no menu de três pontos (⋯) ao lado da barra de endereços\n4. Tocar em “Compartilhar”\n5. Tocar em “Adicionar à Tela de Início”",
     columns: {
       productName: "Produto",
       handling_fee: "Custo",
@@ -171,10 +173,10 @@ export const dictionary = {
       "카카오톡이나 WhatsApp에서는 아이콘을 만들 수 없습니다. 링크를 복사한 뒤 아래 순서대로 따라 해 주세요.",
     shortcutAndroidTitle: "삼성폰·안드로이드폰",
     shortcutAndroidSteps:
-      "1. Chrome(크롬) 앱 열기.\n2. 주소창에 링크를 붙여넣고 이동.\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋮) 메뉴 누르기.\n4. ‘홈 화면에 추가’ 누르기.\n5. ‘바로가기 만들기’ 또는 ‘설치’를 누른 뒤 ‘추가’ 누르기.",
+      "1. Chrome(크롬) 앱 열기\n2. 주소창에 링크를 붙여넣고 이동\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋮) 메뉴 누르기\n4. ‘홈 화면에 추가’ 누르기\n5. ‘바로가기 만들기’ 또는 ‘설치’를 누른 뒤 ‘추가’ 누르기",
     shortcutIosTitle: "아이폰",
     shortcutIosSteps: 
-      "1. Safari(사파리) 앱 열기.\n2. 주소창에 링크를 붙여넣고 이동.\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋯) 메뉴 누르기.\n4. ‘공유’ 누르기.\n5. ‘홈 화면에 추가’ 누르기.",
+      "1. Safari(사파리) 앱 열기\n2. 주소창에 링크를 붙여넣고 이동\n3. 가격표 사이트가 열리면 주소창 옆의 점 세 개(⋯) 메뉴 누르기\n4. ‘공유’ 누르기\n5. ‘홈 화면에 추가’ 누르기",
     columns: {
       productName: "상품명",
       handling_fee: "원가",
@@ -216,8 +218,8 @@ export const dictionary = {
       manage: "관리",
       edit: "수정",
       fields: {
-        name_ko: "한국어 상품명",
-        name_pt: "포르투갈어 상품명",
+        name_ko: "상품명 kr",
+        name_pt: "상품명 br",
         handling_fee: "원가",
         business_price: "사업자",
         consumer_price: "소비자",
