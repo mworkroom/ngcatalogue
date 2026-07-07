@@ -5,3 +5,4 @@ ngcatalogue.zip
 .env
 .env.*
 !.env.example
+docs/learning log/
