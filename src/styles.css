@@ -1496,14 +1496,16 @@ details.product-card summary:active {
     overscroll-behavior: auto;
   }
 
+  /* 기본 출력 폰트 사이즈 */
   .app-center .center-table {
     min-width: 0;
     table-layout: auto;
-    font-size: 7.5pt;
-  }
-
-  body.print-large .app-center .center-table {
     font-size: 8.5pt;
+  }
+  
+  /* 큰 글씨 출력 폰트 사이즈 */
+  body.print-large .app-center .center-table {
+    font-size: 12pt;
   }
 
   .app-center .center-table th {
