@@ -253,6 +253,12 @@ h1 {
   box-shadow: 0 0 0 4px rgba(37, 183, 232, 0.14);
 }
 
+.print-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .search-clear-button {
   position: absolute;
   right: 8px;
@@ -294,11 +300,22 @@ h1 {
   height: 52px;
 }
 
+.print-button-secondary {
+  border: 1px solid var(--accent);
+  background: var(--panel);
+  color: var(--accent);
+}
+
 .print-button:hover,
 .access-form button:hover,
 .admin-button-primary:hover,
 .shortcut-primary:hover {
   background: var(--accent-strong);
+}
+
+.print-button-secondary:hover {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
 }
 
 .meta {
@@ -1265,7 +1282,7 @@ details.product-card summary:active {
     grid-template-columns: 1fr;
   }
 
-  .print-button {
+  .print-actions {
     display: none;
   }
 
@@ -1387,6 +1404,10 @@ details.product-card summary:active {
     font-size: 10pt;
   }
 
+  body.print-large {
+    font-size: 11.5pt;
+  }
+
   .app {
     width: 100%;
     padding: 0;
@@ -1455,13 +1476,17 @@ details.product-card summary:active {
     color: #444;
   }
 
-  @page center-catalogue {
+  @page admin-catalogue {
     size: A4 landscape;
     margin: 6mm;
   }
 
-  .app-center {
-    page: center-catalogue;
+  .app-admin-dashboard-route {
+    page: admin-catalogue;
+  }
+
+  .app-center:not(.app-admin-dashboard-route) {
+    page: auto;
   }
 
   .app-center .table-card {
@@ -1474,7 +1499,11 @@ details.product-card summary:active {
   .app-center .center-table {
     min-width: 0;
     table-layout: auto;
-    font-size: 7pt;
+    font-size: 7.5pt;
+  }
+
+  body.print-large .app-center .center-table {
+    font-size: 8.5pt;
   }
 
   .app-center .center-table th {
@@ -1487,6 +1516,11 @@ details.product-card summary:active {
   .app-center th,
   .app-center td {
     padding: 3px 4px;
+  }
+
+  body.print-large .app-center th,
+  body.print-large .app-center td {
+    padding: 4px 5px;
   }
 
   .app-center .center-table th:first-child,

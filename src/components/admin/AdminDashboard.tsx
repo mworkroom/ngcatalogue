@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useAdminProducts } from "../../hooks/useAdminProducts";
 import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
+import { printCatalogue } from "../../utils/printCatalogue";
 import { sortProducts } from "../../utils/productSort";
 import { ErrorState } from "../ErrorState";
 import { LoadingState } from "../LoadingState";
@@ -107,8 +108,10 @@ export function AdminDashboard({
         value={query}
         label={adminText.searchLabel}
         printLabel={t.print}
+        printLargeLabel={t.printLarge}
         onChange={setQuery}
-        onPrint={() => window.print()}
+        onPrint={() => printCatalogue("default")}
+        onPrintLarge={() => printCatalogue("large")}
       />
 
       <div className="admin-toolbar">

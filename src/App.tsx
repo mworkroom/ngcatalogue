@@ -32,6 +32,7 @@ import {
 import { isSupabaseConfigured, supabase } from "./lib/supabase";
 import type { CatalogueMode, Language } from "./types/product";
 import { searchProducts } from "./utils/productSearch";
+import { printCatalogue } from "./utils/printCatalogue";
 import { sortProducts } from "./utils/productSort";
 
 export default function App() {
@@ -251,8 +252,10 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
         value={query}
         label={t.search}
         printLabel={t.print}
+        printLargeLabel={t.printLarge}
         onChange={setQuery}
-        onPrint={() => window.print()}
+        onPrint={() => printCatalogue("default")}
+        onPrintLarge={() => printCatalogue("large")}
       />
 
       <div className="meta" aria-live="polite">

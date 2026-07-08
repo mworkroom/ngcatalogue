@@ -2,16 +2,20 @@ interface SearchBarProps {
   value: string;
   label: string;
   printLabel: string;
+  printLargeLabel: string;
   onChange: (value: string) => void;
   onPrint: () => void;
+  onPrintLarge: () => void;
 }
 
 export function SearchBar({
   value,
   label,
   printLabel,
+  printLargeLabel,
   onChange,
-  onPrint
+  onPrint,
+  onPrintLarge
 }: SearchBarProps) {
   return (
     <section className="search-panel">
@@ -43,14 +47,24 @@ export function SearchBar({
           </button>
         ) : null}
       </div>
-      <button
-        type="button"
-        className="print-button"
-        aria-label={printLabel}
-        onClick={onPrint}
-      >
-        {printLabel}
-      </button>
+      <div className="print-actions">
+        <button
+          type="button"
+          className="print-button"
+          aria-label={printLabel}
+          onClick={onPrint}
+        >
+          {printLabel}
+        </button>
+        <button
+          type="button"
+          className="print-button print-button-secondary"
+          aria-label={printLargeLabel}
+          onClick={onPrintLarge}
+        >
+          {printLargeLabel}
+        </button>
+      </div>
     </section>
   );
 }

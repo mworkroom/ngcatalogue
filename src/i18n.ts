@@ -10,6 +10,7 @@ export const dictionary = {
     centerAccessTitle: "Acesso do Centro",
     search: "Pesquisar produto",
     print: "Imprimir PDF",
+    printLarge: "PDF grande",
     language: "Idioma",
     menu: "Menu",
     close: "Fechar",
@@ -58,7 +59,7 @@ export const dictionary = {
       "1. Abrir o app Chrome\n2. Colar o link na barra de endereços e acessar\n3. Quando o site abrir, tocar no menu de três pontos (⋮) ao lado da barra de endereços\n4. Tocar em “Adicionar à tela inicial”\n5. Tocar em “Criar atalho” ou “Instalar” e depois em “Adicionar”",
     shortcutIosTitle: "iPhone",
     shortcutIosSteps:
-      "1. Abrir o app Safari\n2. Colar o link na barra de endereços e acessar\n3. Quando o site abrir, tocar no menu de três pontos (⋯) ao lado da barra de endereços\n4. Tocar em “Compartilhar”\n5. TTocar em “Mais” - “Adicionar à Tela de Início”",
+      "1. Abrir o app Safari\n2. Colar o link na barra de endereços e acessar\n3. Quando o site abrir, tocar no menu de três pontos (⋯) ao lado da barra de endereços\n4. Tocar em “Compartilhar”\n5. Tocar em “Mais” - “Adicionar à Tela de Início”",
     columns: {
       productName: "Produto",
       handling_fee: "Custo",
@@ -128,6 +129,7 @@ export const dictionary = {
     centerAccessTitle: "센터 전용",
     search: "상품명 검색",
     print: "PDF 출력",
+    printLarge: "큰 글씨 출력",
     language: "언어",
     menu: "메뉴",
     close: "닫기",
