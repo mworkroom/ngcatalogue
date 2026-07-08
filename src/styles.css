@@ -726,6 +726,7 @@ details.product-card summary:active {
   margin: 0;
   color: var(--text);
   line-height: 1.5;
+  white-space: pre-line;
 }
 
 .admin-panel {
