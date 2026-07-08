@@ -1,15 +1,16 @@
-export const ADMIN_ROUTE_HASH = "#/admin";
-
 export const POST_AUTH_ROUTE_STORAGE_KEY = "catalog_post_auth_route";
 
 const AUTH_ERROR_STORAGE_KEY = "catalog_auth_error";
 
 export function getOAuthRedirectUrl() {
-  return `${window.location.origin}${window.location.pathname}`;
+  return `${window.location.origin}${getCanonicalAdminPath()}`;
 }
 
 export function storeAdminPostAuthRoute() {
-  sessionStorage.setItem(POST_AUTH_ROUTE_STORAGE_KEY, ADMIN_ROUTE_HASH);
+  sessionStorage.setItem(
+    POST_AUTH_ROUTE_STORAGE_KEY,
+    getCanonicalAdminPath()
+  );
 }
 
 export function readPostAuthRoute() {
@@ -50,6 +51,20 @@ export function getOAuthCallbackErrorMessage() {
 
 export function cleanOAuthCallbackUrl() {
   window.history.replaceState(null, document.title, window.location.pathname);
+}
+
+function getCanonicalAdminPath() {
+  const pathname = window.location.pathname.replace(/\/+$/, "");
+
+  if (pathname.endsWith("/admin")) {
+    return `${pathname}/`;
+  }
+
+  if (!pathname) {
+    return "/admin/";
+  }
+
+  return `${pathname}/admin/`.replace(/\/{2,}/g, "/");
 }
 
 function getAuthHashParams() {

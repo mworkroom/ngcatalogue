@@ -15,17 +15,21 @@ VITE_SUPABASE_PUBLISHABLE_KEY=
 
 ## Routes
 
+custom domain 배포에서 사용자에게 공유하는 주소는 실제 HTML 문서 경로를 사용합니다.
+
 ```text
-/catalog
-/catalog/center
-/admin
+사업자: /
+센터: /center/
+관리자: /admin/
 ```
 
-`/catalog`는 사업자 카탈로그이며, Supabase Edge Function `catalog-business`에서 발급한 서명 세션 토큰이 있을 때만 사업자용 상품 컬럼을 조회합니다. 기존 공개 View 직접 조회 방식은 더 이상 사용하지 않습니다.
+사업자 카탈로그는 Supabase Edge Function `catalog-business`에서 발급한 서명 세션 토큰이 있을 때만 사업자용 상품 컬럼을 조회합니다. 기존 공개 View 직접 조회 방식은 더 이상 사용하지 않습니다.
 
-`/catalog/center`는 센터 전용 카탈로그이며, Supabase Edge Function `catalog-center`에서 발급한 서명 세션 토큰이 있을 때만 센터용 상품 컬럼을 조회합니다.
+`/center/`는 센터 전용 카탈로그이며, Supabase Edge Function `catalog-center`에서 발급한 서명 세션 토큰이 있을 때만 센터용 상품 컬럼을 조회합니다.
 
-GitHub Pages 배포에서는 해시 라우트를 사용합니다.
+`/admin/`은 관리자 전용 진입점입니다. Google 로그인과 관리자 권한 확인 후 상품 생성, 수정, 숨김, 복구 화면을 표시합니다.
+
+기존 해시 라우트는 호환용으로만 처리합니다.
 
 ```text
 #/catalog
@@ -33,7 +37,7 @@ GitHub Pages 배포에서는 해시 라우트를 사용합니다.
 #/admin
 ```
 
-`#/admin`은 관리자 전용 진입점입니다. 상품 편집 기능은 아직 제공하지 않으며, Google 로그인과 관리자 권한 확인 후 placeholder 대시보드만 표시합니다.
+iPhone 홈 화면 추가는 해시 뒤 경로를 별도 문서로 보지 않을 수 있으므로, 홈 화면에 추가할 주소는 반드시 `/center/`, `/admin/` 같은 실제 문서 경로를 사용합니다.
 
 ## Administrator Access
 
@@ -68,33 +72,28 @@ Providers
 Google
 ```
 
-프로젝트 소유자가 Google Client ID와 Google Client Secret을 설정합니다. Google OAuth의 `redirectTo` 값에는 `#/admin` 해시를 직접 넣지 않습니다. 앱은 로그인 시작 전에 `sessionStorage`의 `catalog_post_auth_route`에 `#/admin`을 저장하고, OAuth callback 뒤 Supabase 세션이 복원되면 해당 해시 라우트로 한 번만 이동합니다.
+프로젝트 소유자가 Google Client ID와 Google Client Secret을 설정합니다. Google OAuth의 `redirectTo` 값에는 `#/admin` 해시를 직접 넣지 않습니다. 앱은 로그인 시작 전에 `sessionStorage`의 `catalog_post_auth_route`에 `/admin/` 실제 경로를 저장하고, OAuth callback 뒤 Supabase 세션이 복원되면 해당 실제 경로로 돌아갑니다.
 
-현재 GitHub Pages 배포 단계의 Supabase Auth 설정은 아래 값을 사용합니다.
+custom domain 배포 단계의 Supabase Auth 설정은 아래 값을 사용합니다.
 
 Site URL:
 
 ```text
-https://mworkroom.github.io/ngcatalogue/
+https://price.nangok.app/
 ```
 
 Allowed Redirect URL:
 
 ```text
-https://mworkroom.github.io/ngcatalogue/
+https://price.nangok.app/admin/
 ```
 
-현재 배포 origin과 path는 다음과 같습니다.
+루트 주소만 허용하면 Supabase OAuth callback이 `/admin/` 대신 `/`로 돌아올 수 있습니다. 이 경우 iPhone Safari가 관리자 홈 화면 아이콘을 다시 루트 문서로 저장할 수 있으므로 `/admin/`을 별도로 허용해야 합니다.
+
+GitHub Pages 원본 주소를 계속 사용할 경우 아래 주소도 추가합니다.
 
 ```text
-origin: https://mworkroom.github.io
-path: /ngcatalogue/
-```
-
-나중에 custom domain이 연결되면 OAuth redirect 설정에 아래 도메인 기준 URL도 추가하거나 교체해야 합니다.
-
-```text
-https://catalog.nangok.app/
+https://mworkroom.github.io/ngcatalogue/admin/
 ```
 
 ## Manual Administrator Registration

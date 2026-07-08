@@ -1,4 +1,4 @@
-const CACHE_NAME = "atomy-price-v4";
+const CACHE_NAME = "atomy-price-v5";
 
 const STATIC_FILES = [
   "./",
@@ -52,7 +52,14 @@ self.addEventListener("fetch", (event) => {
   // 페이지 이동은 인터넷 우선, 실패하면 캐시 사용
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request).catch(() => caches.match("./index.html"))
+      fetch(request).catch(async () => {
+        const fallback = getNavigationFallback(url.pathname);
+
+        return (
+          (await caches.match(fallback)) ??
+          (await caches.match("./index.html"))
+        );
+      })
     );
     return;
   }
@@ -78,6 +85,20 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
+function getNavigationFallback(pathname) {
+  const path = pathname.replace(/\/+$/, "");
+
+  if (path.endsWith("/admin") || path.endsWith("/admin.html")) {
+    return "./admin/";
+  }
+
+  if (path.endsWith("/center") || path.endsWith("/center.html")) {
+    return "./center/";
+  }
+
+  return "./index.html";
+}
 
 function shouldCacheRuntimeFile(request, url) {
   return (

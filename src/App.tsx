@@ -644,8 +644,7 @@ function usePostAuthRouteRestore() {
       unsubscribeAuthListener?.();
       unsubscribeAuthListener = null;
       clearPostAuthRoute();
-      cleanOAuthCallbackUrl();
-      window.location.hash = postAuthRoute;
+      restorePostAuthRoute(postAuthRoute);
       finish();
     };
 
@@ -705,6 +704,27 @@ function usePostAuthRouteRestore() {
   }, []);
 
   return checking;
+}
+
+function restorePostAuthRoute(postAuthRoute: string) {
+  if (postAuthRoute.startsWith("#")) {
+    cleanOAuthCallbackUrl();
+    window.location.hash = postAuthRoute;
+    return;
+  }
+
+  if (postAuthRoute.startsWith("/")) {
+    const targetUrl = new URL(postAuthRoute, window.location.origin);
+    const currentPath = normalizeRoute(window.location.pathname);
+    const targetPath = normalizeRoute(targetUrl.pathname);
+
+    if (currentPath !== targetPath) {
+      window.location.replace(targetUrl.pathname);
+      return;
+    }
+
+    cleanOAuthCallbackUrl();
+  }
 }
 
 function getCenterProductsErrorMessage(
