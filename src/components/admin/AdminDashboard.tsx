@@ -114,8 +114,8 @@ export function AdminDashboard({
         printLabel={t.print}
         printLargeLabel={t.printLarge}
         onChange={setQuery}
-        onPrint={() => printCatalogue("default")}
-        onPrintLarge={() => printCatalogue("large")}
+        onPrint={() => printCatalogue("default", "admin")}
+        onPrintLarge={() => printCatalogue("large", "admin")}
       />
 
       <div className="admin-toolbar">

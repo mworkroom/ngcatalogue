@@ -1532,12 +1532,9 @@ details.product-card summary:active {
     margin: 6mm;
   }
 
-  .app-admin-dashboard-route {
+  html.print-admin,
+  body.print-admin {
     page: admin-catalogue;
-  }
-
-  .app-center:not(.app-admin-dashboard-route) {
-    page: auto;
   }
 
   .app-center .table-card {
@@ -1582,6 +1579,58 @@ details.product-card summary:active {
     width: 46%;
     min-width: 0;
     box-shadow: none;
+  }
+
+  .admin-toolbar,
+  .admin-feedback,
+  .admin-product-list {
+    display: none !important;
+  }
+
+  body.print-admin .admin-product-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+    font-size: 8pt;
+  }
+
+  body.print-large.print-admin .admin-product-table {
+    font-size: 9pt;
+  }
+
+  body.print-admin .admin-product-table th,
+  body.print-admin .admin-product-table td {
+    padding: 2.5px 3px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  body.print-admin .admin-product-table th:first-child,
+  body.print-admin .admin-product-table td:first-child {
+    width: auto;
+  }
+
+  body.print-admin .admin-name-ko-col {
+    width: 21%;
+  }
+
+  body.print-admin .admin-name-pt-col {
+    width: 23%;
+  }
+
+  body.print-admin .admin-number-col {
+    width: 7%;
+  }
+
+  body.print-admin .admin-memo-col,
+  body.print-admin .admin-manage-col {
+    width: 0;
+    visibility: collapse;
+  }
+
+  body.print-admin .admin-memo-cell,
+  body.print-admin .admin-manage-column {
+    display: none !important;
   }
 
 }
