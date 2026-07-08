@@ -397,7 +397,7 @@ function Header({
         <LanguageSwitch language={language} onChange={onLanguageChange} />
         <details className="topbar-menu">
           <summary aria-label={t.menu}>
-            <span aria-hidden="true">⚙</span>
+            <img src="/icons/settings.png" alt="" aria-hidden="true" />
           </summary>
           <div className="topbar-menu-panel">
             {onShortcutHelp ? (

@@ -85,7 +85,7 @@ export function AdminDashboard({
         <div className="topbar-actions">
           <details className="topbar-menu">
             <summary aria-label={adminText.menu}>
-              <span aria-hidden="true">⚙</span>
+              <img src="/icons/settings.png" alt="" aria-hidden="true" />
             </summary>
             <div className="topbar-menu-panel">
               <p className="topbar-menu-account">

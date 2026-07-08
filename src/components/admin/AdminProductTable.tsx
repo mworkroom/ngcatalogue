@@ -1,7 +1,5 @@
 import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
-import { QuantityBadge } from "../QuantityBadge";
-import { SetBadge } from "../SetBadge";
 
 interface AdminProductTableProps {
   emptyMessage: string;
@@ -36,8 +34,6 @@ export function AdminProductTable({
           <col className="admin-number-col" />
           <col className="admin-number-col" />
           <col className="admin-number-col" />
-          <col className="admin-number-col" />
-          <col className="admin-set-col" />
           <col className="admin-memo-col" />
           <col className="admin-manage-col" />
         </colgroup>
@@ -53,8 +49,6 @@ export function AdminProductTable({
             <th className="number-column">{adminText.fields.korea_price}</th>
             <th className="number-column">{adminText.fields.korea_pv}</th>
             <th className="number-column">{adminText.fields.weight}</th>
-            <th className="number-column">{adminText.fields.pack_quantity}</th>
-            <th className="admin-set-column">{adminText.fields.is_set}</th>
             <th className="admin-memo-cell">{adminText.fields.memo}</th>
             <th className="admin-manage-column">{adminText.manage}</th>
           </tr>
@@ -64,7 +58,6 @@ export function AdminProductTable({
             <tr key={product.id}>
               <td className="name-column">
                 <strong>{product.name_ko}</strong>
-                <AdminProductBadges product={product} />
               </td>
               <td className="admin-portuguese-name admin-text-column">
                 {product.name_pt || "-"}
@@ -92,12 +85,6 @@ export function AdminProductTable({
               </td>
               <td className="number-column">
                 {formatAdminNumber(product.weight)}
-              </td>
-              <td className="number-column">
-                {formatAdminNumber(product.pack_quantity)}
-              </td>
-              <td className="admin-set-column">
-                {product.is_set ? <SetBadge language="ko" /> : "-"}
               </td>
               <td className="admin-memo-cell">{product.memo || "-"}</td>
               <td className="admin-manage-column">
@@ -129,23 +116,6 @@ export function AdminProductTable({
         <div className="empty">{emptyMessage}</div>
       ) : null}
     </section>
-  );
-}
-
-export function AdminProductBadges({ product }: { product: AdminProduct }) {
-  const hasQuantityBadge = Boolean(
-    product.pack_quantity && product.pack_quantity > 1
-  );
-
-  if (!product.is_set && !hasQuantityBadge) {
-    return null;
-  }
-
-  return (
-    <span className="product-badges">
-      {product.is_set ? <SetBadge language="ko" /> : null}
-      <QuantityBadge quantity={product.pack_quantity} />
-    </span>
   );
 }
 

@@ -1,8 +1,6 @@
 import { Fragment } from "react";
 import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
-import { QuantityBadge } from "../QuantityBadge";
-import { SetBadge } from "../SetBadge";
 import { formatAdminNumber } from "./AdminProductTable";
 
 interface AdminProductCardProps {
@@ -23,7 +21,6 @@ const adminDetailRows: Array<{
     | "korea_price"
     | "korea_pv"
     | "weight"
-    | "pack_quantity"
   >;
 }> = [
   { key: "handling_fee" },
@@ -33,8 +30,7 @@ const adminDetailRows: Array<{
   { key: "brazil_pv" },
   { key: "korea_price" },
   { key: "korea_pv" },
-  { key: "weight" },
-  { key: "pack_quantity" }
+  { key: "weight" }
 ];
 
 export function AdminProductCard({
@@ -44,22 +40,12 @@ export function AdminProductCard({
   restoreBusy = false
 }: AdminProductCardProps) {
   const adminText = dictionary.ko.admin;
-  const hasQuantityBadge = Boolean(
-    product.pack_quantity && product.pack_quantity > 1
-  );
-  const hasBadges = product.is_set || hasQuantityBadge;
 
   return (
     <details className="product-card admin-product-card">
       <summary>
         <span className="summary-name">
           <span className="product-name">{product.name_ko}</span>
-          {hasBadges ? (
-            <span className="product-badges">
-              {product.is_set ? <SetBadge language="ko" /> : null}
-              <QuantityBadge quantity={product.pack_quantity} />
-            </span>
-          ) : null}
         </span>
         <span className="summary-price">
           {formatAdminNumber(product.consumer_price)}
@@ -85,12 +71,6 @@ export function AdminProductCard({
             ) : null}
           </Fragment>
         ))}
-        <div className="detail-row">
-          <span className="detail-label">{adminText.fields.is_set}</span>
-          <span className="detail-value">
-            {product.is_set ? adminText.yes : adminText.no}
-          </span>
-        </div>
         <div className="detail-row admin-memo-row">
           <span className="detail-label">{adminText.fields.memo}</span>
           <span className="detail-value">{product.memo || "-"}</span>
