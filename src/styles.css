@@ -357,7 +357,11 @@ table {
 
 .center-table {
   min-width: 860px;
-  table-layout: auto;
+  table-layout: fixed;
+}
+
+.catalogue-name-col {
+  width: 46%;
 }
 
 th,
@@ -376,8 +380,8 @@ td:first-child {
 
 .center-table th:first-child,
 .center-table td:first-child {
-  width: 260px;
-  min-width: 260px;
+  width: 46%;
+  min-width: 320px;
 }
 
 .center-table th,
@@ -1113,8 +1117,26 @@ details.product-card summary:active {
 }
 
 .admin-product-table {
-  min-width: 1680px;
-  table-layout: auto;
+  min-width: 1720px;
+  table-layout: fixed;
+}
+
+.admin-name-ko-col,
+.admin-name-pt-col {
+  width: 300px;
+}
+
+.admin-number-col {
+  width: 90px;
+}
+
+.admin-set-col,
+.admin-memo-col {
+  width: 90px;
+}
+
+.admin-manage-col {
+  width: 140px;
 }
 
 .admin-product-table th,
@@ -1128,8 +1150,8 @@ details.product-card summary:active {
 .admin-product-table td:first-child {
   position: sticky;
   left: 0;
-  width: 240px;
-  min-width: 240px;
+  width: 300px;
+  min-width: 300px;
   box-shadow: 1px 0 0 var(--line);
 }
 
@@ -1151,22 +1173,30 @@ details.product-card summary:active {
   background: #fafbfc;
 }
 
-.admin-product-table td:nth-child(2) {
-  min-width: 210px;
+.admin-text-column,
+.admin-product-table td:nth-child(2),
+.admin-product-table th:nth-child(2) {
   text-align: left;
 }
 
 .admin-product-table td:last-child,
 .admin-product-table th:last-child {
-  min-width: 132px;
   text-align: left;
 }
 
 .admin-memo-cell {
-  min-width: 260px;
-  max-width: 360px;
   text-align: left;
-  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-set-column {
+  text-align: center;
+}
+
+.admin-manage-column {
+  text-align: left;
 }
 
 .admin-card-subtitle {
@@ -1499,13 +1529,13 @@ details.product-card summary:active {
   /* 기본 출력 폰트 사이즈 */
   .app-center .center-table {
     min-width: 0;
-    table-layout: auto;
-    font-size: 8.5pt;
+    table-layout: fixed;
+    font-size: 10pt;
   }
   
   /* 큰 글씨 출력 폰트 사이즈 */
   body.print-large .app-center .center-table {
-    font-size: 12pt;
+    font-size: 16pt;
   }
 
   .app-center .center-table th {
@@ -1528,7 +1558,7 @@ details.product-card summary:active {
   .app-center .center-table th:first-child,
   .app-center .center-table td:first-child {
     position: static;
-    width: 20%;
+    width: 46%;
     min-width: 0;
     box-shadow: none;
   }

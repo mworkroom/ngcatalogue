@@ -31,6 +31,16 @@ export function ProductTable({
   return (
     <section className={`table-card ${mode === "center" ? "center-table-card" : ""}`}>
       <table className={mode === "center" ? "center-table" : "public-table"}>
+        <colgroup>
+          <col className="catalogue-name-col" />
+          {columns.map((column) => (
+            <col
+              key={column}
+              className="catalogue-number-col"
+              style={{ width: `${54 / columns.length}%` }}
+            />
+          ))}
+        </colgroup>
         <thead>
           <tr>
             <th className="name-column">{t.columns.productName}</th>

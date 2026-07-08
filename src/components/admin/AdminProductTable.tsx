@@ -25,10 +25,26 @@ export function AdminProductTable({
   return (
     <section className="table-card center-table-card admin-product-table-card">
       <table className="center-table admin-product-table">
+        <colgroup>
+          <col className="admin-name-ko-col" />
+          <col className="admin-name-pt-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-number-col" />
+          <col className="admin-set-col" />
+          <col className="admin-memo-col" />
+          <col className="admin-manage-col" />
+        </colgroup>
         <thead>
           <tr>
             <th className="name-column">{adminText.fields.name_ko}</th>
-            <th>{adminText.fields.name_pt}</th>
+            <th className="admin-text-column">{adminText.fields.name_pt}</th>
             <th className="number-column">{adminText.fields.handling_fee}</th>
             <th className="number-column">{adminText.fields.business_price}</th>
             <th className="number-column">{adminText.fields.consumer_price}</th>
@@ -38,9 +54,9 @@ export function AdminProductTable({
             <th className="number-column">{adminText.fields.korea_pv}</th>
             <th className="number-column">{adminText.fields.weight}</th>
             <th className="number-column">{adminText.fields.pack_quantity}</th>
-            <th>{adminText.fields.is_set}</th>
-            <th>{adminText.fields.memo}</th>
-            <th>{adminText.manage}</th>
+            <th className="admin-set-column">{adminText.fields.is_set}</th>
+            <th className="admin-memo-cell">{adminText.fields.memo}</th>
+            <th className="admin-manage-column">{adminText.manage}</th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +66,9 @@ export function AdminProductTable({
                 <strong>{product.name_ko}</strong>
                 <AdminProductBadges product={product} />
               </td>
-              <td className="admin-portuguese-name">{product.name_pt || "-"}</td>
+              <td className="admin-portuguese-name admin-text-column">
+                {product.name_pt || "-"}
+              </td>
               <td className="number-column">
                 {formatAdminNumber(product.handling_fee)}
               </td>
@@ -78,11 +96,11 @@ export function AdminProductTable({
               <td className="number-column">
                 {formatAdminNumber(product.pack_quantity)}
               </td>
-              <td>
+              <td className="admin-set-column">
                 {product.is_set ? <SetBadge language="ko" /> : "-"}
               </td>
               <td className="admin-memo-cell">{product.memo || "-"}</td>
-              <td>
+              <td className="admin-manage-column">
                 <div className="admin-table-actions">
                   <button
                     type="button"

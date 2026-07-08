@@ -7,7 +7,7 @@ interface AdminLoginProps {
 export function AdminLogin({ busy, error, onLogin }: AdminLoginProps) {
   return (
     <section className="access-panel admin-panel" aria-labelledby="admin-title">
-      <h1 id="admin-title">애터미 가격표 관리자 전용</h1>
+      <h1 id="admin-title">관리자 전용</h1>
       <p>Google 계정으로 로그인하세요.</p>
       <button
         className="admin-button admin-button-primary"
