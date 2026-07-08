@@ -393,7 +393,9 @@ function Header({
       <div className="topbar-actions">
         <LanguageSwitch language={language} onChange={onLanguageChange} />
         <details className="topbar-menu">
-          <summary aria-label={t.menu}>⋮</summary>
+          <summary aria-label={t.menu}>
+            <span aria-hidden="true">⚙</span>
+          </summary>
           <div className="topbar-menu-panel">
             {onShortcutHelp ? (
               <button type="button" onClick={onShortcutHelp}>

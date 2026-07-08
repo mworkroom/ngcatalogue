@@ -58,7 +58,7 @@ export const dictionary = {
       "1. Abrir o app Chrome\n2. Colar o link na barra de endereços e acessar\n3. Quando o site abrir, tocar no menu de três pontos (⋮) ao lado da barra de endereços\n4. Tocar em “Adicionar à tela inicial”\n5. Tocar em “Criar atalho” ou “Instalar” e depois em “Adicionar”",
     shortcutIosTitle: "iPhone",
     shortcutIosSteps:
-      "1. Abrir o app Safari\n2. Colar o link na barra de endereços e acessar\n3. Quando o site abrir, tocar no menu de três pontos (⋯) ao lado da barra de endereços\n4. Tocar em “Compartilhar”\n5. Tocar em “Adicionar à Tela de Início”",
+      "1. Abrir o app Safari\n2. Colar o link na barra de endereços e acessar\n3. Quando o site abrir, tocar no menu de três pontos (⋯) ao lado da barra de endereços\n4. Tocar em “Compartilhar”\n5. TTocar em “Mais” - “Adicionar à Tela de Início”",
     columns: {
       productName: "Produto",
       handling_fee: "Custo",

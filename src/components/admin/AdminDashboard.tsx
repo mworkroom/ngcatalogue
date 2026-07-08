@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useAdminProducts } from "../../hooks/useAdminProducts";
 import { dictionary } from "../../i18n";
 import type { AdminProduct } from "../../types/product";
+import { sortProducts } from "../../utils/productSort";
 import { ErrorState } from "../ErrorState";
 import { LoadingState } from "../LoadingState";
 import { SearchBar } from "../SearchBar";
@@ -45,11 +46,21 @@ export function AdminDashboard({
   const actionBusy = action !== "idle";
 
   const visibleProducts = useMemo(
-    () => filterProducts(products.filter((product) => product.is_visible), query),
+    () =>
+      sortProducts(
+        filterProducts(products.filter((product) => product.is_visible), query),
+        "ko",
+        query
+      ),
     [products, query]
   );
   const hiddenProducts = useMemo(
-    () => filterProducts(products.filter((product) => !product.is_visible), query),
+    () =>
+      sortProducts(
+        filterProducts(products.filter((product) => !product.is_visible), query),
+        "ko",
+        query
+      ),
     [products, query]
   );
   const editorOpen = creating || selectedProduct !== null;
@@ -72,7 +83,9 @@ export function AdminDashboard({
         <h1 id="admin-dashboard-title">{t.title}</h1>
         <div className="topbar-actions">
           <details className="topbar-menu">
-            <summary aria-label={adminText.menu}>⋮</summary>
+            <summary aria-label={adminText.menu}>
+              <span aria-hidden="true">⚙</span>
+            </summary>
             <div className="topbar-menu-panel">
               <p className="topbar-menu-account">
                 <span>{adminText.loggedInEmail}</span>

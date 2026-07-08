@@ -32,6 +32,16 @@ export function SearchBar({
           aria-label={label}
           onChange={(event) => onChange(event.target.value)}
         />
+        {value ? (
+          <button
+            type="button"
+            className="search-clear-button"
+            aria-label="검색어 지우기"
+            onClick={() => onChange("")}
+          >
+            ×
+          </button>
+        ) : null}
       </div>
       <button
         type="button"
