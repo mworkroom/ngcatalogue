@@ -15,12 +15,14 @@ import { AdminProductTable } from "./AdminProductTable";
 interface AdminDashboardProps {
   busy: boolean;
   email: string;
+  onShortcutHelp: () => void;
   onLogout: () => void;
 }
 
 export function AdminDashboard({
   busy,
   email,
+  onShortcutHelp,
   onLogout
 }: AdminDashboardProps) {
   const t = dictionary.ko;
@@ -89,9 +91,11 @@ export function AdminDashboard({
             </summary>
             <div className="topbar-menu-panel">
               <p className="topbar-menu-account">
-                <span>{adminText.loggedInEmail}</span>
                 <strong>{email || adminText.fallbackAccount}</strong>
               </p>
+              <button type="button" onClick={onShortcutHelp}>
+                {t.shortcutBannerAction}
+              </button>
               <button
                 type="button"
                 disabled={busy || actionBusy}

@@ -308,6 +308,7 @@ function CatalogueRoute({ mode }: { mode: CatalogueMode }) {
 function AdminRoute() {
   const { action, signInWithDifferentAccount, signInWithGoogle, signOut, state } =
     useAdminAuth();
+  const [shortcutHelpOpen, setShortcutHelpOpen] = useState(false);
   const busy = action !== "idle";
 
   useEffect(() => {
@@ -341,7 +342,14 @@ function AdminRoute() {
         <AdminDashboard
           email={state.user.email ?? ""}
           busy={busy}
+          onShortcutHelp={() => setShortcutHelpOpen(true)}
           onLogout={signOut}
+        />
+        <ShortcutHelpDialog
+          language="ko"
+          mode="center"
+          open={shortcutHelpOpen}
+          onClose={() => setShortcutHelpOpen(false)}
         />
       </main>
     );

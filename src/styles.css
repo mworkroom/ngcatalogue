@@ -1099,6 +1099,15 @@ details.product-card summary:active {
   gap: 8px;
 }
 
+.admin-form-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.admin-form-actions .admin-button {
+  width: 100%;
+}
+
 .admin-product-card-actions .admin-button {
   width: 100%;
 }
