@@ -1546,7 +1546,7 @@ details.product-card summary:active {
   
   /* 큰 글씨 출력 폰트 사이즈 */
   body.print-large .app-center .center-table {
-    font-size: 16pt;
+    font-size: 18pt;
   }
 
   .app-center .center-table th {
