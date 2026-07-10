@@ -6,3 +6,5 @@ ngcatalogue.zip
 .env.*
 !.env.example
 docs/learning log/
+docs/project spec/
+
