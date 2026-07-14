@@ -1146,6 +1146,10 @@ details.product-card summary:active {
   table-layout: fixed;
 }
 
+.admin-product-table td:first-child strong {
+  font-weight: 750;
+}
+
 .admin-name-ko-col,
 .admin-name-pt-col {
   width: 300px;
